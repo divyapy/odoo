@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.sale.button</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="5"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="loginext" string="Loginext" data-key="loginext_odoo_integration">
+                    <h2>Loginext - Click Below Button to Sync Shop in Loginext</h2>
+                    <div class="content-group">
+                        <div class="mt16">
+                            <button name="syncOdooShopinLoginext" string="Loginext Shop Sync" type="object" class="oe_link" icon="fa-arrow-right"/>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
