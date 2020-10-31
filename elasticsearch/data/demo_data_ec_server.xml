@@ -1,0 +1,15 @@
+<odoo>
+	<data noupdate="1">
+
+        <record id="elastic_server_default_data" model="elastic.server.configuration">
+            <field name="ec_name">Elastic Cloud	</field>
+            <field name="ec_host">xx.xx.xx.xx</field>
+            <field name="ec_is_port">True</field>
+            <field name="ec_port">9243</field>
+            <field name="ec_url_prefix">http</field>
+            <field name="ec_timeout">10</field>
+            <field name="ec_auth_type">http_auth</field>
+        </record>
+
+    </data>
+</odoo>

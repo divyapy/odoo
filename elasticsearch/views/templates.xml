@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="search_brand_categories" inherit_id="website_sale.products">
+        <xpath expr="//div[@class='o_wsale_products_grid_table_wrapper']" position="before">
+            <div t-if="ec_brands" class="container oe_website_sale o_wsale_products_grid_table_wrapper">
+                <h4 class='text-center'>Brands</h4>
+                <table class="table m-0" t-att-data-ppr="ppr">
+                    <tbody>
+                        <tr t-foreach="ec_brands" t-as="brands">
+                            <td t-foreach="brands" t-as="brand" class="oe_product te_shop_grid">
+                                <a t-att-href="brand['url']" class="dropdown-item p-2 text-wrap">
+                                    <div class="media align-items-center o_search_product_item">
+                                        <img t-attf-src="/web/image/product.brands.ept/#{brand['id']}/logo"
+                                            class="flex-shrink-0 o_image_64_contain"/>
+                                        <div class="media-body px-3">
+                                            <h6 t-attf-class="font-weight-bold" t-esc="brand['name']"/>
+                                        </div>
+                                    </div>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+            </div>
+            <div t-if="ec_categorys" class="container oe_website_sale o_wsale_products_grid_table_wrapper">
+                <h4 class='text-center'>Categories</h4>
+                <table class="table m-0" t-att-data-ppr="ppr">
+                    <tbody>
+                        <tr t-foreach="ec_categorys" t-as="categoryss">
+                            <td t-foreach="categoryss" t-as="categorys" class="oe_product te_shop_grid">
+                                <a t-att-href="categorys['url']" class="dropdown-item p-2 text-wrap">
+                                    <div class="media align-items-center o_search_product_item">
+                                        <img t-attf-src="/web/image/product.public.category/#{categorys['id']}/image_128"
+                                            class="flex-shrink-0 o_image_64_contain"/>
+                                        <div class="media-body px-3">
+                                            <h6 t-attf-class="font-weight-bold" t-esc="categorys['name']"/>
+                                        </div>
+                                    </div>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <br/>
+            </div>
+        </xpath>
+    </template>
+</odoo>

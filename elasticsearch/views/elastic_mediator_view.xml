@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="elastic_mediator_form_view" model="ir.ui.view">
+			<field name="name">elastic.mediator.form.view</field>
+			<field name="model">elastic.mediator</field>
+			<field name="arch" type="xml">
+				<form string="Elastic Mapping" >
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="ec_record_source" />
+                                <field name="ec_record_id" />
+                                <field name="ec_index_id" />
+                            </group>
+                            <group>
+                                <field name="ec_need_create" />
+                                <field name="ec_need_update" />
+                            </group>
+                        </group>
+                    </sheet>
+				</form>
+			</field>
+		</record>
+
+        <record id="elastic_mediator_tree_view" model="ir.ui.view">
+			<field name="name">elastic.mediator.tree.view</field>
+			<field name="model">elastic.mediator</field>
+			<field name="arch" type="xml">
+				<tree string="Elastic Mapping" >
+                    <field name="ec_record_source" />
+                    <field name="ec_record_id" />
+                    <field name="ec_index_id" />
+                    <field name="ec_need_create" />
+                    <field name="ec_need_update" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="action_elastic_mediator">
+			<field name="name">Elastic Mapping</field>
+			<field name="res_model">elastic.mediator</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<menuitem name="Elastic Mapping"
+			id="menu_elastic_mediator" parent="ec_search_menu"
+			action="action_elastic_mediator" />
+
+	</data>
+</odoo>
