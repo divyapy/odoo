@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="1">
+        <function name="write" model="ir.model.data">
+            <function name="search" model="ir.model.data">
+                <value eval="[('module', '=', 'repair'), ('name', '=', 'mail_template_repair_quotation')]"/>
+            </function>
+            <value eval="{'noupdate': False}"/>
+        </function>
+
+        <record id="repair.mail_template_repair_quotation" model="mail.template">
+            <field name="report_template" ref="report_quotation"/>
+        </record>
+
+        <function name="write" model="ir.model.data">
+            <function name="search" model="ir.model.data">
+                <value eval="[('module', '=', 'repair'), ('name', '=', 'mail_template_repair_quotation')]"/>
+            </function>
+            <value eval="{'noupdate': True}"/>
+        </function>
+    </data>
+</odoo>

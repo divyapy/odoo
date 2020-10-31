@@ -1,0 +1,410 @@
+.orders-screen-content{
+    margin: 0px auto;
+    max-width: 98%;
+    text-align: left;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+.full-content{
+    margin-top: 1%;
+}
+th{
+    font-size: 14px;
+}
+.wk_order_list_operations tr, .wk_order_list_parts tr{
+    font-size: 12px;
+    line-height: 2.5;
+}
+
+.line-buttons{
+    margin-top: 1%;
+    display: flex;
+    justify-content: space-between;
+}
+.static-order-details{
+    display: table;
+    width: 98%;
+    table-layout: fixed;
+    overflow: visible;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-bottom: 2%;
+}
+.dynamic-order-details{
+    overflow-y: scroll;
+    height: 80%;
+    display: block;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+.line-button{
+    top: 0px;
+    line-height: 32px;
+    padding: 3px 13px;
+    font-size: 20px;
+    background: rgb(230, 230, 230);
+    margin: 12px;
+    border-radius: 3px;
+    border: solid 1px rgb(209, 209, 209);
+    cursor: pointer;
+}
+.line-button:hover{
+    background: default;
+}
+.static-order-detail{
+    display: table-cell;
+    /* border: 1px solid black; */
+    border: 1px;
+    border-style: solid;
+    border-width: thin;
+    border-color: rgb(209, 209, 209);
+    font-size: 14px;
+    /* border-style: dotted; */
+    padding-left: 2%;
+    padding-bottom: 1%;
+    height: 13em;
+}
+.static-order-details h1{
+    font-size: 16px;
+}
+.label{
+    display: initial !important;
+    float: left;
+}
+
+/* ----------------- Error Popup Start----------------- */
+.pr-alert {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    position: fixed;
+    left: 33%;
+    top: 21%;
+    width:41%;
+    height:65%;
+}
+    
+.pr-alert button.cancel:hover {
+    background-color: #7ecff4;
+}
+  
+.pr-alert button.cancel{
+    background-color: #8CD4F5;
+    color: white;
+    font-size: 20px;
+    border-radius: 5px;
+    padding: 10px 32px;
+    margin-top: 26px;
+    cursor: pointer;
+}
+
+.pr-cancel-alert {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    position: absolute;
+    left: 35%;
+    top: 30%;
+    width:30%;
+    height:20%;
+}
+.pr-cancel-alert button.cancel:hover, .pr-cancel-alert button.ok_cancel_order:hover {
+    background-color: #49c0f7;
+}
+.pr-cancel-alert button.cancel, .pr-cancel-alert button.ok_cancel_order {
+    background-color: #8CD4F5;
+    color: white;
+    font-size: 20px;
+    border-radius: 5px;
+    padding: 10px 30px;
+    margin: 20px;
+    cursor: pointer;
+}
+
+div.wk_mark {
+    height: 85px;
+    width: 85px;
+    border-radius: 100px;
+    border:3px solid #ff8d8d;
+}
+
+div.wk_mark:after {
+    content:"\d7";
+    font-size:100px;
+    color:#ff8d8d;
+    top: -13px;
+    position: relative;
+}
+.pr-alert h2 {
+    color: #575757;
+    font-size: 30px;
+    margin-top:10px;
+}
+.pr-alert p {
+    color: #797979;
+    font-size: 16px;
+    margin-top:0px;
+}
+
+/* ----------------- Error Popup End----------------- */
+
+/* ----------------- Vehcile Dropdown Start ----------------*/
+
+./*client-vehicles{
+    width: 39%;
+    height: 1.7em;
+    margin-top: 1%;
+}
+.client-vehicles option{
+
+}
+#create_vehcile_rec{
+    margin-top: 3%;
+}*/
+
+/* ----------------- Vehcile Dropdown End----------------*/
+
+/* -------------- Vehicle Create Form ----------------- */
+
+/* .wk_new_product_button{
+    line-height: 4;
+} */
+
+/* -------------- Vehicle Create Form ----------------- */
+
+/* ---------- Repair Order Create Popup ------------- */
+
+.order_status {
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-left-color: #5cb85c;
+    animation-name: load_order;
+    animation-duration: .5s;
+    display: inline-block;
+}
+
+.order_status,
+.order_status:after {
+    border-radius: 50%;
+}
+
+.show_tick {
+    display: none;
+}
+
+.show_tick.draw:after {
+    animation-name: show_tick;
+    transform: scaleX(-1) rotate(135deg);
+    animation-duration: 1.2s;
+    animation-timing-function: ease; 
+}
+.show_tick:after {
+    opacity: 1;
+    height: 40px;
+    width: 20px;
+    /* transform-origin: left top; */
+    border-right: 3px solid #5cb85c;
+    border-top: 3px solid #5cb85c;
+    top: 55px;
+    right: 240px;
+    content: '';
+    position: absolute;
+}
+@keyframes show_tick {
+    0% {
+      height: 0;
+      width: 0;
+      opacity: 1;
+    }
+    20% {
+      height: 0;
+      width: 20px;
+      opacity: 1;
+    }
+    40% {
+      height: 40px;
+      width: 20px;
+      opacity: 1;
+    }
+    100% {
+      height: 40px;
+      width: 20px;
+      opacity: 1;
+    }
+  }
+
+/* ---------- Repair Order Create Popup ------------- */
+
+/* ----------- Tax field -------------------*/
+
+ul #tax_item{
+    display: initial;
+}
+#tax_item{
+    background-color: white;
+    color: #777777;
+    box-shadow: inset 0 0 0 2px #777777;
+    border-radius: 10rem;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    padding: 2% 2% 2% 2%;
+}
+/* ----------- Tax field -------------------*/
+
+.wk_order_list_operations{
+    margin-bottom: 4%;
+}
+.client-detail{
+    width: 100%;
+}
+.label{
+    display: inline-block;
+    width: 40%;
+    text-align: left;
+}
+.input_label{
+    font-weight: bold;
+}
+.input_data{
+
+}
+.order-buttons{
+    margin-right: 2px;
+}
+
+/* ------------ Load Quotataion -------------*/
+
+.load_repair_id{
+    width: 206px;
+    height: 33px;
+    /*border: 1px solid #cecbcb;*/
+    font-size: 16px;
+    margin-left: 23px;
+    color: green;
+    text-align: center;
+  }
+  .load_repair_id:focus{
+    outline: none; 
+  }
+
+.suggest-holder {
+    position: absolute;
+    width: 45%;
+    max-height:110px;
+    margin-left: 6%;
+    box-shadow:0px 2px 2px 2px #bcbcbc;
+    overflow-y: auto;
+    display: none;
+}
+.suggest-holder input {
+    width: 146px;
+    border: 1px solid rgba(0,120,0,.6);
+    margin-top:1px;
+}
+.suggest-holder ul {
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    /*border: 1px solid rgba(0,120,0,.6);*/
+}
+.suggest-holder li {
+    list-style-type:none;
+    padding: 7px;
+}
+.suggest-holder li:hover {
+    cursor: pointer;
+}
+.suggest-holder li:hover, li.active {
+     background: hsl(200, 40%, 80%);
+}
+
+.button.load_repair_order {
+    right: 0px;
+}
+/* ------------ Load Quotataion -------------*/
+
+/* ----------------------------------------- */
+
+.pos_repair_order_buttons{
+    width: 100%;
+    text-align: center;
+    margin-top: 1%;
+}
+.pos_repair_order_button{
+    /* width: 49%; */
+    display: inline-block;
+}
+.pad-order-buttons{
+    font-size: 12px !important;
+    color:  #555555;
+    font-weight: bold;
+}
+/* ----------------------------------------- */
+
+#delivery_date{
+    width: 38%;
+}
+
+#odoo_meter {
+    width: 38%;
+}
+.button.wk_load_all_quotation {
+    right: 0px;
+}
+
+/* ----------  ----------------*/
+
+.product_info  {
+    width:100%;
+}
+.picking_info  {
+    width:100%;
+}
+.title_product_stock{
+    text-align:left;
+    background:#e4e2e2 
+}
+.title_product_stock th{
+    padding: 10px 8px;
+    font-size: initial;
+}
+.product_info tr:nth-child(even) {
+    background: rgb(247,247,247);
+}
+.product_info tr {
+    cursor: pointer;
+}
+.product_info th{
+    padding: 10px 8px;
+    font-size: initial;
+}
+.product_info td {
+    padding: 10px 8px;
+    font-size: initial;
+    font-weight: normal;
+}
+.picking_info tr:nth-child(even) {
+    background: rgb(247,247,247);
+}
+.picking_info tr {
+    cursor: pointer;
+}
+.picking_info th{
+    padding: 10px 8px;
+    font-size: initial;
+}
+.picking_info td {
+    padding: 10px 8px;
+    font-size: initial;
+    font-weight: normal;
+}
+#repair_name_info {
+    position:absolute;
+    top:0%;
+    right:25%;
+}
+
+/* ----------  ----------------*/

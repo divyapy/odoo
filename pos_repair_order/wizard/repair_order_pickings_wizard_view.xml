@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Form view for object repair.order.pickings.wizard-->
+        <record model="ir.ui.view" id="repair_order_pickings_wizard_form_view">
+            <field name="name">repair.order.pickings.wizard.form</field>
+            <field name="model">repair.order.pickings.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Repair Order Pickings">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="repair_id" readonly="1"/>
+                            </group>
+                        </group>
+                        <field name="pickings_ids" nolabel="1"/>
+                        <footer>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree view for object repair.order.picking.items.wizard-->
+        <record id="repair_order_picking_items_wizard_tree" model="ir.ui.view">
+            <field name="name">repair.order.picking.items.wizard.tree</field>
+            <field name="model">repair.order.picking.items.wizard</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Repair Order Picking Items" create="false" editable="top" delete="false">
+                    <field name="picking_id" readonly="1"/>
+                    <field name="state" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

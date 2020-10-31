@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_customer_vehicle_brand,customer.vehicle.brand,model_customer_vehicle_brand,base.group_user,1,1,1,1
+access_customer_vehicle_model,customer.vehicle.model,model_customer_vehicle_model,base.group_user,1,1,1,1
+access_customer_vehicle,customer.vehicle,model_customer_vehicle,base.group_user,1,1,1,1
+access_service_history,service.history,model_service_history,base.group_user,1,1,1,1
+access_hold_reason,hold.reason,model_hold_reason,base.group_user,1,1,1,1
+access_fuel_type,fuel.type,model_fuel_type,base.group_user,1,1,1,1
+access_bay,bay,model_bay,base.group_user,1,1,1,1
+access_remove_repair_line,remove.repair.line,model_remove_repair_line,base.group_user,1,1,1,1

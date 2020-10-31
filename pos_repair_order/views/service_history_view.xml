@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		<!-- Form view for object service.history-->
+		<record id="service_history_form" model="ir.ui.view">
+			<field name="name">service.history.form</field>
+			<field name="model">service.history</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Service History">
+					<sheet>
+						<group>
+							<group>
+								<field name="label"/>
+								<field name="action_time"/>
+							</group>
+							<group>
+                                <field name="user_id"/>
+								<field name="action_remark"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<!-- Tree view for object service.history-->
+		<record id="service_history_view_tree" model="ir.ui.view">
+			<field name="name">service.history.tree</field>
+			<field name="model">service.history</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Service History" create="false">
+					<field name="label"/>
+					<field name="action_time"/>
+                    <field name="action_remark"/>
+					<field name="user_id"/>
+				</tree>
+			</field>
+		</record>
+
+		<!-- Action for object service.history-->
+		<record id="action_service_history" model="ir.actions.act_window">
+			<field name="name">Service History</field>
+			<field name="res_model">service.history</field>
+			<!-- <field name="view_type">form</field> -->
+			<field name="view_mode">tree,form</field>
+		</record>
+
+        <!-- Form view for object hold.reason-->
+		<record id="hold_reason_form" model="ir.ui.view">
+			<field name="name">hold.reason.form</field>
+			<field name="model">hold.reason</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Hold Reason">
+					<sheet>
+						<group>
+							<group>
+								<field name="name"/>
+                            </group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<!-- Tree view for object hold.reason-->
+		<record id="hold_reason_view_tree" model="ir.ui.view">
+			<field name="name">hold.reason.tree</field>
+			<field name="model">hold.reason</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Hold Reason">
+					<field name="name"/>
+				</tree>
+			</field>
+		</record>
+
+		<!-- Action for object hold.reason-->
+		<record id="action_hold_reason" model="ir.actions.act_window">
+			<field name="name">Hold Reason</field>
+			<field name="res_model">hold.reason</field>
+			<!-- <field name="view_type">form</field> -->
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<!-- Form view for object fuel.type-->
+		<record id="fuel_type_form" model="ir.ui.view">
+			<field name="name">fuel.type.form</field>
+			<field name="model">fuel.type</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Fuel Type">
+					<sheet>
+						<group>
+							<group>
+								<field name="fuel_type"/>
+                            </group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<!-- Tree view for object fuel.type-->
+		<record id="fuel_type_view_tree" model="ir.ui.view">
+			<field name="name">fuel.type.tree</field>
+			<field name="model">fuel.type</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Fuel Type">
+					<field name="fuel_type"/>
+				</tree>
+			</field>
+		</record>
+
+		<!-- Action for object fuel.type-->
+		<record id="action_fuel_type" model="ir.actions.act_window">
+			<field name="name">Fuel Type</field>
+			<field name="res_model">fuel.type</field>
+			<!-- <field name="view_type">form</field> -->
+			<field name="view_mode">tree,form</field>
+		</record>
+
+        <menuitem id="menu_service_history" name="Service History" parent="repair.repair_menu_config" action="action_service_history"/>
+        <menuitem id="menu_hold_reason" name="Hold Reason" parent="repair.repair_menu_config" action="action_hold_reason"/>
+        <menuitem id="menu_fuel_type" name="Fuel Type" parent="repair.repair_menu_config" action="action_fuel_type"/>
+</odoo>

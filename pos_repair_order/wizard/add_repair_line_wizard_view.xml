@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Form view for object aadd.item.repair.line.wizard-->
+        <record model="ir.ui.view" id="add_item_repair_line_wizard_view">
+            <field name="name">add.item.repair.line.wizard.form</field>
+            <field name="model">add.item.repair.line.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Add Item">
+                    <group>
+                        <group>
+                            <field name="product_id" domain="[('sale_ok', '=', True), ('available_in_pos', '=', True)]"/>
+                            <field name="product_uom_qty" />
+                            <field name="unit_price" />
+                        </group>
+                        <group>
+                            <field name="qty_on_hand" />
+                            <field name="forecasted_qty" />
+                            <field name="available_to_sell" />
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="add_item_to_repair_order" type="object" string="Add" class="btn btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action for object add.item.repair.line.wizard-->
+        <record id="action_add_item_repair_line_wizard" model="ir.actions.act_window">
+			<field name="name">Add Item</field>
+            <field name="type">ir.actions.act_window</field>
+			<field name="res_model">add.item.repair.line.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+		</record>
+
+    </data>
+</odoo>

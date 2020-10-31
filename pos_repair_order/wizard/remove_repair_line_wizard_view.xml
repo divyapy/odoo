@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Form view for object remove.item.repair.line.wizard-->
+        <record model="ir.ui.view" id="remove_item_repair_line_wizard_view">
+            <field name="name">remove.item.repair.line.wizard.form</field>
+            <field name="model">remove.item.repair.line.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Remove Item">
+                    <field name="removing_line_ids" nolabel="1"/>
+                    <footer>
+                        <button name="remove_item_to_repair_order" type="object" string="Remove" class="btn btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+         <!-- <record id="remove_item_line_form" model="ir.ui.view">
+            <field name="name">remove.item.line.form</field>
+            <field name="model">remove.item.line</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Remove Iitem Line">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="product_id"/>
+                                <field name="product_uom_qty"/>
+                                <field name="unit_price"/>
+                            </group>
+                            <group>
+                                <field name="remove_qty"/>
+                                <field name="remove_reason"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record> -->
+
+        <!-- Tree view for object remove.item.line-->
+        <record id="remove_item_line_view_tree" model="ir.ui.view">
+            <field name="name">remove.item.line.tree</field>
+            <field name="model">remove.item.line</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Remove Iitem Line" create="false" editable="top" delete="false">
+                    <field name="product_id" readonly="1" force_save="1"/>
+                    <field name="product_uom_qty" readonly="1" force_save="1"/>
+                    <field name="unit_price" readonly="1" force_save="1"/>
+                    <field name="remove_qty"/>
+                    <field name="remove_reason" />
+                    <field name="line_id" invisible="1"/>
+                    <field name="line_obj" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

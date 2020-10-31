@@ -1,0 +1,38 @@
+# -*- coding: utf-8 -*-
+
+{
+  "name"                 :  "POS Repair Order",
+  "summary"              :  "POS Repair Order.",
+  "category"             :  "Point Of Sale",
+  "version"              :  "1.0.0",
+  "author"               :  "Prolitus Technologies Pvt. Ltd.",
+  "license"              :  "Other proprietary",
+  "depends"              :  ['point_of_sale', 'repair', 'hr', 'pos_orders', 'inter_pos_warehouse_tranfer', 'pos_product_detail'],
+  "data"                 :  [
+                            'reports/report_file.xml',
+                            'reports/quotation_report.xml',
+                            'reports/pos_order_quotation_report.xml',
+                            'data/send_quotation_template.xml', 
+                            'data/ir_sequence_data.xml',
+                            'security/ir.model.access.csv',
+                            'wizard/assign_wizard_view.xml',
+                            'wizard/add_repair_line_wizard_view.xml',
+                            'wizard/remove_repair_line_wizard_view.xml',
+                            'wizard/repair_order_pickings_wizard_view.xml',
+                            'views/pos_config_view.xml',
+                            'views/template.xml',
+                            'views/pos_quotes_view.xml',
+                            'views/customer_vehicle_view.xml',
+                            'views/service_history_view.xml',
+                            'views/product_template_view.xml',
+                            'views/bay.xml',
+                            'views/removed_repair_line_view.xml',
+                            'views/stock_warehouse_view.xml',
+                            'views/stock_picking_view.xml'
+                            ],
+  "qweb"                 :  ['static/src/xml/pos_orders.xml'],
+  "application"          :  True,
+  "installable"          :  True,
+  "auto_install"         :  False,
+  "pre_init_hook"        :  "pre_init_check",
+}

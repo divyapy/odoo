@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<report 
+		id="report_quotation"
+		string="Receipt"
+		model="repair.order" 
+		report_type="qweb-pdf"
+		file="pos_repair_order.quotation_order_report" 
+		name="pos_repair_order.quotation_order_report" 
+		/>
+		<report 
+		id="pos_order_quotation"
+		string="POS Receipt"
+		model="pos.order" 
+		report_type="qweb-pdf"
+		file="pos_repair_order.pos_repair_order_pos_order_report" 
+		name="pos_repair_order.pos_repair_order_pos_order_report" 
+		/>
+	</data>
+</odoo>

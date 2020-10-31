@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		<!-- Form view for object bay-->
+		<record id="bay_view_form" model="ir.ui.view">
+			<field name="name">bay.form</field>
+			<field name="model">bay</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Bay">
+					<sheet>
+						<group>
+							<group>
+								<field name="bay_name" />
+								<field name="bay_code" />
+								<field name="warehouse_id" />
+								<field name="color" widget="color_picker"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<!-- Tree view for object bay-->
+		<record id="bay_view_tree" model="ir.ui.view">
+			<field name="name">bay.tree</field>
+			<field name="model">bay</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Bay" editable="top">
+					<field name="bay_name" />
+					<field name="bay_code" />
+					<field name="warehouse_id" />
+					<field name="color" widget="color_picker"/>
+				</tree>
+			</field>
+		</record>
+
+		<!-- Action for object bay-->
+		<record id="action_bay" model="ir.actions.act_window">
+			<field name="name">Bay</field>
+			<field name="res_model">bay</field>
+			<!-- <field name="view_type">form</field> -->
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<menuitem id="menu_bay_conf" name="Bay Configuration" parent="repair.repair_menu_config" action="action_bay" sequence="12"/>
+
+</odoo>

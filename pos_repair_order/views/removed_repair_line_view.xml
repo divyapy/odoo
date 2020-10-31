@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form view for object remove.repair.line-->
+    <record id="remove_repair_line_form" model="ir.ui.view">
+        <field name="name">remove.repair.line.form</field>
+        <field name="model">remove.repair.line</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Remove Repair Line">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="product_id"/>
+                            <field name="removed_qty"/>
+                            <field name="rev_mov_id"/>
+                        </group>
+                        <group>
+                            <field name="remove_reason"/>
+                            <field name="timestamp"/>
+                            <field name="user_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view for object remove.repair.line-->
+    <record id="remove_repair_line_view_tree" model="ir.ui.view">
+        <field name="name">remove.repair.line.tree</field>
+        <field name="model">remove.repair.line</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Remove Repair Line" create="false">
+                <field name="product_id"/>
+                <field name="removed_qty"/>
+                <field name="remove_reason"/>
+                <field name="rev_mov_id"/>
+                <field name="timestamp"/>
+                <field name="user_id"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

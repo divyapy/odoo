@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!--Inherit pos.order form view-->
+		<record id="view_pos_pos_form_inherit" model="ir.ui.view">
+			<field name="name">POS view</field>
+			<field name="model">pos.order</field>
+			<field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='pos_reference']" position="after">	
+					<field name="quotation_id"/>
+				</xpath>
+				<xpath expr="//field[@name='partner_id']" position="after">	
+					<field name="repair_id" readonly="1"/>
+				</xpath>
+			</field>
+		</record>
+
+		<!--Inherit pos.order search view-->
+		<record id="pos_repair_order_inherit_search_view" model="ir.ui.view">
+			<field name="name">pos.order.search.view.extend</field>
+			<field name="model">pos.order</field>
+			<field name="inherit_id" ref="point_of_sale.view_pos_order_filter"/>
+			<field name="arch" type="xml">
+				<xpath expr="//search/field[@name='session_id']" position="after">
+					<field name="repair_id" string="Repair Order"/>
+				</xpath>
+			</field> 
+		</record>
+
+		<!--Inherit repair.order form view-->
+		<record id="form_view_order_quotations" model="ir.ui.view">
+			<field name="name">repair.order.inheirt.form</field>
+			<field name="model">repair.order</field>
+			<field name="inherit_id" ref="repair.view_repair_order_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="/form" position="attributes">
+					<attribute name="delete">false</attribute>
+				</xpath>
+				<xpath expr="//header" position="inside">
+					<button name="%(action_add_item_repair_line_wizard)d" type="action" 
+						context="{'default_repair_id': active_id}" string="Add Item" 
+						class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['confirmed', 'under_repair'])]}"/>
+					<button name="remove_item_repair_line" type="object" 
+						string="Remove Item" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['confirmed', 'under_repair'])]}"/>
+				</xpath>
+				<xpath expr="//form/sheet/div" position="inside"> 
+					<button class="oe_stat_button" name="order_parts"
+						string="Product/Parts" type="object"
+						icon="fa-bars"/>
+					<button class="oe_stat_button" name="pos_order_related_to_ro"
+						string="POS Orders" type="object"
+						icon="fa-bars"/>
+					<button class="oe_stat_button" name="added_stock_picking"
+						string="Stock Picking" type="object"
+						icon="fa-bars"/>
+					<button class="oe_stat_button" name="removed_stock_picking"
+						string="Remove Items Stock Picking" type="object"
+						icon="fa-bars"/>
+					<button class="oe_stat_button" name="other_locations_stock_picking"
+						string="Other Stock Picking" type="object"
+						icon="fa-bars"/>
+					<button class="oe_stat_button" name="back_order_stock_picking"
+						string="Back Order Stock Picking" type="object"
+						icon="fa-bars"/>
+				</xpath>
+				<xpath expr="/form/*" position="before"> 
+					<header> 
+						<button name="send_by_email" string="Send by Email" type="object" attrs="{'invisible': [('quotation_sent', '=', False)]}"></button>
+						<button name="send_by_email" string="Send by Email" type="object" class="btn-primary" attrs="{'invisible': [('quotation_sent', '=', True)]}"></button>
+						<button name="click_cancel" string="Cancel" type="object" states="draft,expired"></button>
+					</header> 
+				</xpath>
+				<xpath expr="//field[@name='partner_id']" position="after">
+					<field name="warehouse_id" required="1"/>
+					<!-- <field name="quotation_id" attrs="{'readonly': [('state', '!=', 'draft')]}" placeholder="Leave blank to auto-generate"/> -->
+					<field name="quotation_sent" invisible="1"/>
+					<label for="vehicle_id" string="Vehicle"/>
+					<div>
+						<field name="vehicle_id" /><br/>
+						<field name="v_model_id" domain="[('vehicle_id', '!=', False)]" nolabel="1" readonly="1" style="margin-right:2%;"/>
+						<field name="v_brand_id" domain="[('vehicle_id', '!=', False)]"  nolabel="1" readonly="1"/><br/>
+						<field name="v_year" domain="[('vehicle_id', '!=', False)]" nolabel="1" readonly="1" style="margin-right:2%;"/>
+						<field name="v_fule_type_id" domain="[('vehicle_id', '!=', False)]" nolabel="1" readonly="1" />
+					</div>
+					<field name="mechanic_ids" widget="many2many_tags" width="0.5" optional="hide"/>
+					<field name="assign_bay_id"/>
+					<field name="picking_state"/>
+				</xpath>
+				<xpath expr="//field[@name='invoice_method']" position="after">
+					<field name="odoometer_reading" readonly="1"/>
+					<field name="repair_type" readonly="1"/>
+					<field name="operation_type" readonly="1"/>
+					<field name="expected_delivery_date" readonly="1"/>
+					<field name="total_service_time" readonly="1"/>
+					<field name="time_by_planning" readonly="1"/>	
+					<field name="planning_id" readonly="1"/>
+					<!-- <field name="visible_buttons" invisible="1"/> -->
+				</xpath>
+				<xpath expr="//field[@name='pricelist_id']" position="replace">
+					<field name="pricelist_id" groups="product.group_product_pricelist" context="{'product_id':product_id}"/>
+				</xpath>
+				<xpath expr="//form/sheet/notebook/page/field[@name='operations']/tree/field[@name='product_id']" position="attributes">
+					<attribute name="domain">[('type', '!=', 'service'),('sale_ok', '=', True), ('available_in_pos', '=', True)]</attribute>
+				</xpath>
+				<xpath expr="//form/sheet/notebook/page/field[@name='operations']/form/group/group[1]/field[@name='tax_id']" position="after">
+					<field name="discount" widget="monetary"/>
+					<field name="price_subtotal_with_tax" widget="monetary"/>
+					<field name="qty_on_hand"/>
+					<field name="forecasted_qty"/>
+					<field name="stock_loc_id"/>
+				</xpath>
+				<xpath expr="//form/sheet/notebook/page/field[@name='operations']/tree/field[@name='tax_id']" position="after">
+					<field name="discount" widget="monetary"/>
+					<field name="price_subtotal_with_tax" widget="monetary"/>
+					<field name="qty_on_hand"/>
+					<field name="forecasted_qty"/>
+					<field name="available_to_sell"/>
+					<field name="stock_loc_id"/>
+					<field name="created_from" invisible="1"/>
+				</xpath>
+				<xpath expr="//form/sheet/notebook/page/field[@name='fees_lines']/tree/field[@name='tax_id']" position="after">
+					<field name="created_from" invisible="1"/>
+				</xpath>
+				<xpath expr="//form/sheet/notebook/page/field[@name='fees_lines']/tree/field[@name='product_id']" position="attributes">
+					<attribute name="domain">[('type', '=', 'service'),('sale_ok', '=', True), ('available_in_pos', '=', True)]</attribute>
+				</xpath>
+				<xpath expr="//form/sheet/notebook/page/field[@name='operations']/form/group[@name='History']/field[@name='move_id']" position="after">
+					<field name="rev_move_id"/>
+				</xpath>
+				<xpath expr="//page[3]/group/group/field[@name='move_id']" position="after">
+					<!-- <field name="pricelist_id"/> -->
+					<field name="session_id"/>
+					<field name="employee_id"/>
+					<field name="date_order"/>
+					<field name="fiscal_position_id" options="{'no_create': True}"/>
+				</xpath>
+				<xpath expr="//page[3]/group/group/field[@name='invoiced']" position="after">
+					<field name="pos_order_id" readonly="1"/>
+					<field name="adv_pymt_amt" invisible="1" readonly="1"/>
+					<field name="final_pos_order_id" readonly="1"/>
+					<field name="stock_picking_id" widget="many2many_tags" width="0.5" optional="hide" readonly="1"/>
+					<field name="rev_stock_picking_id" readonly="1"/>
+					<field name="remove_stock_picking_id" widget="many2many_tags" width="0.5" optional="hide" readonly="1"/>
+					<field name="back_order_ids" widget="many2many_tags" width="0.5" optional="hide" readonly="1" />
+				</xpath>
+				<xpath expr="//page[3]" position="after">
+					<!-- <page string="Payment Info" name="repair_payment_details">
+						<group>
+							<field name="payments_ids" nolabel="1" options="{'create': false, 'create_edit': false}"/>
+						</group>
+					</page> -->
+					<page string="History" name="repair_history">
+						<group>
+							<field name="serice_history_ids" nolabel="1" options="{'create': false, 'create_edit': false}"/>
+						</group>
+					</page>
+					<page string="Removed Lines" name="removed_repair_line">
+						<group>
+							<field name="removed_repair_ids" nolabel="1"/>
+						</group>
+					</page>
+				</xpath>
+			</field>
+		</record>
+
+		<!--Inherit repair.order tee view-->
+		<record id="repair_order_tree_view_inherit" model="ir.ui.view" >
+			<field name="name">repair.order.tree.view.inherit</field>
+			<field name="model">repair.order</field>
+			<field name="type">tree</field>
+			<field name="inherit_id" ref="repair.view_repair_order_tree"/>
+			<field name="arch" type="xml">
+				<xpath expr="/tree" position="attributes">
+					<attribute name="delete">false</attribute>
+				</xpath>
+				<xpath expr="//field[@name='partner_id']" position="after">
+					<field name="planning_start_time"/>
+					<field name="picking_state"/>
+					<button name="show_pickings" type="object" string="Pickings"
+						class="oe_stat_button" icon="fa-bars fa-2x"/>
+				</xpath>
+			</field>
+		</record>
+
+		<!--Inherit quotations search view-->
+		<record id="view_repair_order_inherit_search" model="ir.ui.view">
+			<field name="name">repair.select.search.extend.view</field>
+			<field name="model">repair.order</field>
+			<field name="inherit_id" ref="repair.view_repair_order_form_filter"/>
+			<field name="arch" type="xml">
+				<xpath expr="//search/field[@name='partner_id']" position="after">
+				<field name="vehicle_id" string="Vehicle"/>
+				<field name="pos_order_id" string="POS Order"/>
+			</xpath>
+			</field>
+		</record>
+		
+		<record id="action_assign_service_order" model="ir.actions.act_window">
+            <field name="name">Repair Order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">repair.order</field>
+            <field name="view_mode">tree,form</field>
+			<field name="domain">[('repair_type','=','service'),('assign_bay_id', '!=', False)]</field>
+        </record>
+
+		<record id="action_unassign_service_order" model="ir.actions.act_window">
+            <field name="name">Unassigned Repair Order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">repair.order</field>
+            <field name="view_mode">tree,form</field>
+			<field name="domain">[('repair_type','=','service'),('assign_bay_id', '=', False)]</field>
+        </record>
+		
+		<record id="action_quotation_tree" model="ir.actions.act_window">
+            <field name="name">Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">repair.order</field>
+            <field name="view_mode">tree,form</field>
+			<field name="domain">[('repair_type','=','quote')]</field>
+        </record>
+
+		<menuitem id="menu_cr_conf" name="Repair Orders" parent="repair.menu_repair_order" sequence="7"/>
+        <menuitem action="action_assign_service_order" id="menu_assign_service_order" groups="stock.group_stock_user" name="Repair Order" parent="menu_cr_conf"/>
+        <menuitem action="action_unassign_service_order" id="menu_unassign_service_order" groups="stock.group_stock_user" name="Unassigned Repair Order" parent="menu_cr_conf"/>
+        <menuitem action="action_quotation_tree" id="menu_quotation" groups="stock.group_stock_user" name="Quotation" parent="repair.menu_repair_order" sequence="9"/>
+
+	</data>
+</odoo>
