@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_elastic_server_configuration,elastic.server.configuration,model_elastic_server_configuration,,1,1,1,1
+acesss_elastic_index_configuration,elastic.index.configuration,model_elastic_index_configuration,,1,1,1,1
+access_elastic_field_configuration,elastic.field.configuration,model_elastic_field_configuration,,1,1,1,1
+access_elastic_domain_configuration,elastic.domain.configuration,model_elastic_domain_configuration,,1,1,1,1
+access_elastic_mediator,elastic.mediator,model_elastic_mediator,,1,1,1,1
+access_elastic_priority,elastic.priority,model_elastic_priority,,1,1,1,1

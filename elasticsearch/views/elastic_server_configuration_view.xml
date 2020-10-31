@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="elastic_server_configuration_form_view" model="ir.ui.view">
+			<field name="name">elastic.server.configuration.form.view</field>
+			<field name="model">elastic.server.configuration</field>
+			<field name="arch" type="xml">
+				<form string="Elastic Server Configuration" create="false" delete="false">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button type="object"
+                                name="make_active"
+                                icon="fa-toggle-on"
+                                string="Active"
+                                attrs="{'invisible':[('active', '=', True)]}" />
+                            <button type="object"
+                                name="make_inactive"
+                                icon="fa-power-off"
+                                string="In Active"
+                                attrs="{'invisible':[('active', '=', False)]}" />
+                        </div>
+                        <group>
+                            <field name="active" invisible="1"/>
+                            <field name="ec_name" />
+                            <field name="ec_limit" />
+                            <field name="ec_host" />
+                            <field name="ec_is_port" />
+                            <field name="ec_port" attrs="{'invisible':[('ec_is_port', '=', False)], 'required':[('ec_is_port', '=', True)]}"/>
+                            <field name="ec_timeout" />
+                            <field name="ec_url_prefix" />
+                            <field name="ec_auth_type" attrs="{'invisible':[('ec_url_prefix', '!=', 'https')], 'required':[('ec_url_prefix', '=', 'https')]}"/>
+                            <field name="ec_username" attrs="{'invisible':['|', ('ec_auth_type', '!=', 'http_auth'), ('ec_url_prefix', '!=', 'https')], 'required':[('ec_auth_type', '=', 'http_auth'), ('ec_url_prefix', '=', 'https')]}"/>
+                            <field name="ec_password" password="True" attrs="{'invisible':['|', ('ec_auth_type', '!=', 'http_auth'), ('ec_url_prefix', '!=', 'https')], 'required':[('ec_auth_type', '=', 'http_auth'), ('ec_url_prefix', '=', 'https')]}"/>
+                            <field name="ec_other_auth_details" attrs="{'invisible':['|', ('ec_auth_type', '!=', 'other'), ('ec_url_prefix', '=', 'http')], 'required':[('ec_auth_type', '=', 'other')]}"/>
+                            <button type="object" name="test_ec_connection" string="Test Connection" icon="fa-television"/>
+                        </group>
+                    </sheet>
+				</form>
+			</field>
+		</record>
+
+        <record id="elastic_server_configuration_tree_view" model="ir.ui.view">
+			<field name="name">elastic.server.configuration.tree.view</field>
+			<field name="model">elastic.server.configuration</field>
+			<field name="arch" type="xml">
+				<tree string="Elastic Server Configuration" create="false" delete="false">
+                    <field name="ec_name" />
+                    <field name="ec_limit" />
+                    <field name="ec_host" />
+                    <field name="ec_is_port" />
+                    <field name="ec_port" />
+                    <field name="ec_url_prefix" />
+                    <field name="ec_timeout" />
+                    <field name="ec_auth_type" />
+                    <field name="ec_username" />
+                    <field name="ec_password" />
+                    <field name="ec_other_auth_details" />
+				</tree>
+			</field>
+		</record>
+
+        <record id="elastic_server_configuration_view_search" model="ir.ui.view">
+            <field name="name">elastic.server.configuration.search</field>
+            <field name="model">elastic.server.configuration</field>
+            <field name="arch" type="xml">
+                <search string="Elastic Server Configuration">
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                </search>
+            </field>
+        </record>
+
+		<record model="ir.actions.act_window" id="action_elastic_server_configuration">
+			<field name="name">Elastic Server Configuration</field>
+			<field name="res_model">elastic.server.configuration</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+
+        <menuitem name="Elastic Cloud"
+            id="ec_root_menu"
+            web_icon="elasticsearch,static/description/icon.png" />
+
+        <menuitem name="Elastic Server"
+            id="ec_server_menu"
+            parent="ec_root_menu" />
+
+		<menuitem name="Elastic Server Configuration"
+			id="menu_ec_server" parent="ec_server_menu"
+			action="action_elastic_server_configuration" />
+
+	</data>
+</odoo>
