@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Form view for object purchase.action.dashboard.wizard -->
+        <record model="ir.ui.view" id="pr_withdraw_wizard_wizard_view">
+            <field name="name">pr.withdraw.wizard.form</field>
+            <field name="model">pr.withdraw.wizard</field>
+            <field name="arch" type="xml">
+                <form string="PR Withdraw Wizard">
+                    <group>
+                        <group>
+                            <field name="cancel_attachment_id" widget="binary"/>
+                            <field name="cancel_comments"/>
+                            <field name="cancel_rework"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="withdraw" type="object" string="Withdraw" class="btn btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action for object pr.withdraw.wizard -->
+        <record id="action_pr_withdraw_wizard" model="ir.actions.act_window">
+			<field name="name">PR Withdraw Wizard</field>
+            <field name="type">ir.actions.act_window</field>
+			<field name="res_model">pr.withdraw.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+		</record>
+    </data>
+</odoo>

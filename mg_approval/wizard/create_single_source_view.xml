@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Form view for object wiz.create.single.source -->
+        <record model="ir.ui.view" id="create_single_source_wizard_view">
+            <field name="name">wiz.create.single.source.form</field>
+            <field name="model">wiz.create.single.source</field>
+            <field name="arch" type="xml">
+                <form string="Create Single Source">
+                    <group>
+                        <group>
+                            <field name="requisition_id" invisible="1"/>
+                            <field name="vendor_id"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="create_single_source" type="object" string="Create" class="btn btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action for object wiz.create.single.source -->
+        <record id="action_create_single_source_wizard" model="ir.actions.act_window">
+			<field name="name">Create Single Source Wizard</field>
+            <field name="type">ir.actions.act_window</field>
+			<field name="res_model">wiz.create.single.source</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+		</record>
+    </data>
+</odoo>

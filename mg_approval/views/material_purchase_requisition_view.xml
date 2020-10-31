@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="material_purchase_requisition_inherit_form_view">
+        <field name="name">material.purchase.requisition.inherit.form</field>
+        <field name="model">material.purchase.requisition</field>
+        <field name="inherit_id" ref="material_purchase_requisitions.material_purchase_requisition_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr='//form' position='replace'>
+                <form>
+                    <header>
+                        <!-- <button name="requisition_confirm" type="object" string="Confirm" states="draft" class="btn-primary" groups="base.group_user"/> -->
+                        <!-- <button name="manager_approve" type="object" string="Department Approve" states="dept_confirm,cancel" class="btn-primary" groups="material_purchase_requisitions.group_purchase_requisition_department"/> -->
+                        <!-- <button name="user_approve" type="object" string="Approve" states="ir_approve" class="btn-primary" groups="material_purchase_requisitions.group_purchase_requisition_user"/> -->
+                        <!-- <button name="request_stock" type="object" string="Create Picking and PO" states="approve" class="btn-primary" groups="material_purchase_requisitions.group_purchase_requisition_user"/> -->
+                        <!-- <button name="action_received" type="object" string="Received" states="stock" class="btn-primary"/> -->
+                        <!-- <button name="requisition_reject" type="object" string="Reject" groups="material_purchase_requisitions.group_purchase_requisition_department,material_purchase_requisitions.group_purchase_requisition_user" states="dept_confirm,approve,ir_approve" /> -->
+                        <button name="action_cancel" type="object" states="draft" string="Cancel" groups="base.group_user"/>
+                        <button name="reset_draft" type="object" string="Reset to Draft" states="cancel,reject,receive" class="btn-primary"/>
+                        <button class="btn-primary" name="dashboard" string="Dashboard" type="object"
+                            attrs="{'invisible': [('state', 'in', ['draft', 'cancel'])]}"/>
+                        <button class="btn-primary" name="edit_po_details" string="PO Details" type="object"
+                            attrs="{'invisible': [('state', 'in', ['draft', 'cancel'])]}"/>
+                        <field name="state" widget="statusbar" string="confirm" statusbar_visible="draft,pending,stock,receive,approve"/>
+                        <field name="has_access_to_request" invisible="1"/>
+                        <button class="btn-primary" name="%(action_pr_approve_wizard)d"
+                            string="Approve" type="action"
+                            context="{'default_requisition_id': active_id}"
+                            attrs="{'invisible': [('user_status', 'not in', 'pending')]}"/>
+                        <button class="btn-primary" name="%(action_pr_reject_wizard)d"
+                            string="Refuse" type="action"
+                            context="{'default_requisition_id': active_id}"
+                            attrs="{'invisible': [('user_status', 'not in', 'pending')]}"/>
+                        <button class="btn-primary" name="%(action_pr_withdraw_wizard)d"
+                            string="Withdraw" type="action"
+                            context="{'default_requisition_id': active_id}"
+                            attrs="{'invisible':['|','|',('request_status','==','new'),('user_status','in',['pending','cancel']),('user_status','=',False)]}" />
+                        <button class="btn-primary" name="%(action_create_single_source_wizard)d"
+                            string="Create Single Source" type="action"
+                            context="{'default_requisition_id': active_id}"
+                            attrs="{'invisible': ['|','|',('is_single_source','!=', 'yes'),('single_source_id','!=', False),('state', 'not in', ['approve'])]}"/>
+                        <button class="btn-primary" name="action_pr_confirm" string="Submit" type="object" attrs="{'invisible': [('state', 'not in', 'draft')]}"/>
+                        <!-- <button class="btn-primary" name="action_pr_draft" string="Draft" type="object" attrs="{'invisible': [('state', 'not in', ['approve', 'reject'])]}"/> -->
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <!-- <button class="oe_stat_button" type="object" icon="fa-truck"
+                                    name="show_picking" string="Internal Picking" groups="base.group_user"/>
+                            <button class="oe_stat_button" type="object" icon="fa-book"
+                                    name="action_show_po" string="Purchase Order"/> -->
+                            <button class="oe_stat_button" type="object" icon="fa-book"
+                                    name="action_show_documents" string="Documents"/>
+                            <button class="oe_stat_button" type="object" icon="fa-book"
+                                    name="action_show_all_documents" string="All Documents"
+                                    groups="material_purchase_requisitions.group_purchase_requisition_user"/>
+                            <field name="single_source_id" invisible="1"/>
+                            <button class="oe_stat_button" type="object" icon="fa-book"
+                                    name="action_show_single_source" string="Single Source"
+                                    attrs="{'invisible': [('single_source_id','=', False)]}"/>
+                        </div>
+                        <div class="oe_title">
+                            <div class="oe_title">
+                                <h1>
+                                    <field name="name"/><br/>
+                                </h1>
+                            </div>
+                        </div>
+                        <div class="pr_detail">
+                            <h2 class="pr_detail_block">Initiator Details</h2>
+                        </div>
+                        <group col="4">
+                            <group>
+                                <field name="company_id"/>
+                                <field name="user_status" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="initiator_id" string="Initiator"/>
+                                <field name="request_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="department_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="receive_date" attrs="{'readonly': [['state', 'in', ['reject','cancel','receive']]]}"/>
+                            </group>
+                            <group>
+                                <field name="phone"/>
+                                <field name="date_end" attrs="{'readonly': [['state', 'in', ['reject','cancel','receive']]]}"/>
+                            </group>
+                        </group>
+                        <div class="pr_detail">
+                            <h2 class="pr_detail_block">PR Details</h2>
+                        </div>
+                        <group col="3">
+                            <group>
+                                <field name="user_status"/>
+                                <field name="request_status"/>
+                                <field name="plant_location"/>
+                                <field name="cost_center"/>
+                                <field name="gl_account"/>
+                                <field name="ar_number"/>
+                                <field name="wbs_element"/>
+                                <field name="is_project_pr"/>
+                                <field name="program_code"/>
+                                <field name="pr_curreny_id"/>
+                                <field name="is_nda_required"/>
+                                <field name="po_required"/>
+                                <field name="no_po_reason"/>
+                                <!-- <field name="category_id" domain="[('category_type', '=', 'pr')]"/> -->
+                            </group>
+                            <group>
+                                <field name="pr_number"/>
+                                <field name="pr_date"/>
+                                <field name="tentative_date"/>
+                                <field name="pr_type"/>
+                                <field name="sub_type"/>
+                                <field name="category_id" domain="[('category_type', '=', 'pr')]" required="1"/>
+                                <field name="budgeted_item"/>
+                                <field name="year"/>
+                                <field name="budgeted_line_item"/>
+                                <field name="is_hazardous"/>
+                                <field name="is_single_source"/>
+                                <field name="single_source_type" attrs="{'invisible': [('is_single_source','!=', 'yes')]}"/>
+                                <field name="purchase_negotiation_required"/>
+                            </group>
+                            <group>
+                                <field name="pr_receipt_date"/>
+                                <!-- <field name="forward_to_buyer"/> -->
+                                <field name="requisiton_responsible_id" string="Forward to Buyer"/>
+                                <field name="supplier_name"/>
+                                <field name="vendor_code"/>
+                                <field name="po_number"/>
+                                <field name="po_amount"/>
+                                <field name="po_invoice_date"/>
+                                <field name="po_end_date"/>
+                                <field name="delivery_date"/>
+                                <field name="biq"/>
+                                <field name="savings_from_biq"/>
+                                <field name="close_pr"/>
+                            </group>
+                        </group>
+                        <!-- <div class="oe_title">
+                            <h2>
+                                <span>Old Fields</span>
+                            </h2>
+                        </div> -->
+                        <!-- <group>
+                            <group>
+                                <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="department_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="company_id" groups="base.group_multi_company" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="requisiton_responsible_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="request_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="receive_date" attrs="{'readonly': [['state', 'in', ['reject','cancel','receive']]]}"/>
+                                <field name="date_end" attrs="{'readonly': [['state', 'in', ['reject','cancel','receive']]]}"/>
+                                <field name="analytic_account_id" groups="analytic.group_analytic_accounting" attrs="{'readonly': [['state', 'in', ['reject','cancel','receive']]]}"/>
+                            </group>
+                        </group> -->
+                        <notebook>
+                            <page string="Requisitions Lines">
+                                <field name="requisition_line_ids" attrs="{'readonly': [('state', 'in', ['cancel','receive'])]}">
+                                    <tree editable="bottom">
+                                        <field name="requisition_type" groups="material_purchase_requisitions.group_purchase_requisition_user,purchase.group_purchase_user,material_purchase_requisitions.group_purchase_requisition_manager,material_purchase_requisitions.group_purchase_requisition_department" invisible="1"/>
+                                        <field name="product_id"/>
+                                        <field name="description"/>
+                                        <field name="qty"/>
+                                        <field name="unit_price"/>
+                                        <field name="uom"/>
+                                        <field name="sub_total"/>
+                                        <field name="partner_id" groups="material_purchase_requisitions.group_purchase_requisition_user,purchase.group_purchase_user,material_purchase_requisitions.group_purchase_requisition_manager,material_purchase_requisitions.group_purchase_requisition_department" attrs="{'readonly': [('requisition_type', '!=', 'purchase')]}" widget="many2many_tags" invisible="1"/>
+                                    </tree>
+                                </field>
+                                <group>
+                                    <field name="reason" attrs="{'readonly': [['state', 'in', ['reject','cancel','receive']]]}" placeholder="Add Reason for Internal Requistion ...."/>
+                                </group>
+                                <group class="oe_subtotal_footer oe_right">
+                                    <div class="oe_subtotal_footer_separator oe_inline">
+                                        <label for="amount_total"/>
+                                    </div>
+                                    <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </group>
+                            </page>
+                            <page groups="material_purchase_requisitions.group_purchase_requisition_user,stock.group_stock_user" string="Picking Details" attrs="{'readonly': [['state', 'in', ['done']]]}">
+                                <group>
+                                    <group>
+                                        <field name="location_id"
+                                            groups="material_purchase_requisitions.group_purchase_requisition_user,stock.group_stock_user"
+                                            domain="[('usage','!=', 'view')]" attrs="{'readonly': [['state', 'in', ['reject','cancel','receive']]]}"/>
+                                    </group>
+                                    <group>
+                                        <field name="dest_location_id" groups="material_purchase_requisitions.group_purchase_requisition_user,stock.group_stock_user" attrs="{'readonly': [['state', 'in', ['reject','cancel','receive']]]}"/>
+                                        <field name="delivery_picking_id" groups="material_purchase_requisitions.group_purchase_requisition_user,stock.group_stock_user"/>
+                                        <field name="custom_picking_type_id" groups="material_purchase_requisitions.group_purchase_requisition_user,stock.group_stock_user" attrs="{'readonly': [['state', 'in', ['reject','cancel','receive']]]}"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Other Information">
+                                <group>
+                                    <group>
+                                        <field name="employee_confirm_id"/>
+                                        <field name="approve_manager_id"/>
+                                        <field name="approve_employee_id"/>
+                                        <field name="reject_employee_id"/>
+                                    </group>
+                                    <group>
+                                        <field name="confirm_date"/>
+                                        <field name="managerapp_date"/>
+                                        <field name="userrapp_date"/>
+                                        <field name="userreject_date"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Approver(s)" name="approvers">
+                                <field name="approver_ids">
+                                    <tree decoration-success="status=='approved'" decoration-warning="status=='pending'" decoration-danger="status=='refused'" edit="false" create="false">
+                                        <field name="user_id" string="Approver" attrs="{'readonly':[('status','!=','new')]}"/>
+                                        <field name="status"/>
+                                        <field name="approve_attachment_id" />
+                                        <field name="approve_comments" />
+                                        <field name="approve_rework" />
+                                        <field name="refused_attachment_id" />
+                                        <field name="refused_comments" />
+                                        <field name="refused_rework" />
+                                        <field name="cancel_attachment_id" />
+                                        <field name="cancel_comments" />
+                                        <field name="cancel_rework" />
+                                    </tree>
+                                    <form create="false">
+                                        <group>
+                                            <field name="user_id"/>
+                                            <field name="status"/>
+                                            <field name="approve_attachment_id"/>
+                                            <field name="approve_comments" />
+                                            <field name="approve_rework" />
+                                            <field name="refused_attachment_id"/>
+                                            <field name="refused_comments" />
+                                            <field name="refused_rework" />
+                                            <field name="cancel_attachment_id"/>
+                                            <field name="cancel_comments" />
+                                            <field name="cancel_rework" />
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                            <page string="Recommended Potentail Supplier(s)" name="recommended_potentail_supplier">
+                                <field name="recommended_potentail_supplier_ids">
+                                    <tree editable="bottom">
+                                        <field name="vendor_id" required="1"/>
+                                        <field name="vendor_phone" readonly="1"/>
+                                        <field name="vendor_email" readonly="1"/>
+                                        <field name="vendor_fax" />
+                                        <field name="vendor_code" />
+                                        <field name="vendor_gstin" />
+                                        <field name="contact_person" readonly="1"/>
+                                        <field name="address" readonly="1"/>
+                                    </tree>
+                                    <form >
+                                        <group>
+                                            <group>
+                                                <field name="vendor_id" readonly="1"/>
+                                                <field name="vendor_phone" readonly="1"/>
+                                                <field name="vendor_email" readonly="1"/>
+                                                <field name="vendor_fax" readonly="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="vendor_code" readonly="1"/>
+                                                <field name="vendor_gstin" readonly="1"/>
+                                                <field name="contact_person" readonly="1"/>
+                                                <field name="address" readonly="1"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                            <page string="Purchase Action Dashboard" name="purchase_action_dashboard">
+                                <group>
+                                    <group>
+                                        <field name="pr_accept_date" readonly="1"/>
+                                        <field name="bid_list_approved_date" readonly="1"/>
+                                        <field name="rfq_sent_on" readonly="1"/>
+                                        <field name="first_quote_receipt_on" readonly="1"/>
+                                        <field name="second_quote_receipt_on" readonly="1"/>
+                                        <field name="tr_proposal_submitted_on" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="tr_approved_on" readonly="1"/>
+                                        <field name="target_price_sent_on" readonly="1"/>
+                                        <field name="final_quote_receipt" readonly="1"/>
+                                        <field name="sourcing_completed_on" readonly="1"/>
+                                        <field name="loi_issued_on" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="PO Details" name="po_details">
+                                <group>
+                                    <group>
+                                        <field name="po_dt_po_number" readonly="1"/>
+                                        <field name="po_dt_supplier_name" readonly="1"/>
+                                        <field name="po_dt_vendor_code" readonly="1"/>
+                                        <field name="po_dt_pr_amount" readonly="1"/>
+                                        <field name="po_dt_issue_date" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="po_dt_end_date" readonly="1"/>
+                                        <field name="po_dt_delivery_date" readonly="1"/>
+                                        <field name="po_dt_biq" readonly="1"/>
+                                        <field name="po_dt_saveing_from_biq" readonly="1"/>
+                                        <field name="po_dt_remarks" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Attachment" name="pr_attachment">
+                                <field name="attachment_ids">
+                                    <tree editable="bottom" >
+                                        <field name="attachment_type_id"
+                                                domain="[('attachment_type', '=', 'pr')]"/>
+                                        <field name="attachment_status_id" />
+                                        <field name="attachment_file" widget="binary" filename="attachment"/>
+                                        <field name="move_next_level" />
+                                        <field name="is_mandatory" />
+                                    </tree>
+                                    <form >
+                                        <group>
+                                            <field name="attachment_type_id"
+                                                    domain="[('attachment_type', '=', 'pr')]"/>
+                                            <field name="attachment_status_id" />
+                                        </group>
+                                        <group>
+                                            <field name="attachment_file" widget="binary" filename="attachment"/>
+                                            <field name="move_next_level" />
+                                            <field name="is_mandatory" />
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_pending_request_purchase_requisition" model="ir.actions.act_window">
+        <field name="name">My Pending Action</field>
+        <field name="res_model">material.purchase.requisition</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'create': False}</field>
+        <field name="domain">[('approver_ids.user_id', '=', uid), ('approver_ids.status', '!=', 'approved')]</field>
+    </record>
+
+    <record id="action_approved_request_requisition" model="ir.actions.act_window">
+        <field name="name">Approved Request</field>
+        <field name="res_model">material.purchase.requisition</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'create': False}</field>
+        <field name="domain">[('approver_ids.user_id', '=', uid), ('approver_ids.status', '=', 'approved')]</field>
+    </record>
+
+    <menuitem id="menu_item_actions_pr_ss"
+        name="Actions"
+        parent="material_purchase_requisitions.menu_purchase_requisition"
+        groups="group_procurement_approval_user,group_procurement_approval_manager"/>
+
+    <menuitem id="menu_item_actions_pr"
+        name="Purchase Request"
+        parent="menu_item_actions_pr_ss" />
+
+    <menuitem id="menu_item_pending_request_requisition"
+        name="My Pending Action"
+        parent="menu_item_actions_pr"
+        action="action_pending_request_purchase_requisition" />
+
+    <!-- <menuitem id="menu_action_pending_request_requisition"
+        name="My Pending Action"
+        parent="menu_item_pending_request_requisition"
+        /> -->
+
+    <menuitem id="menu_item_approved_request_requisition"
+        name="Approved Request"
+        parent="menu_item_actions_pr"
+        action="action_approved_request_requisition" />
+
+    <!-- <menuitem id="menu_action_approved_request_requisition"
+        name="Approved Request"
+        parent="menu_item_approved_request_requisition"
+        /> -->
+
+</odoo>

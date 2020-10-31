@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Form view for object pr.approve.wizard -->
+        <record model="ir.ui.view" id="pr_approve_wizard_view">
+            <field name="name">pr.approve.wizard.form</field>
+            <field name="model">pr.approve.wizard</field>
+            <field name="arch" type="xml">
+                <form string="PR Approve">
+                    <group>
+                        <group>
+                            <field name="approve_attachment_id" widget="binary"/>
+                            <field name="approve_comments"/>
+                            <field name="approve_rework"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="approve" type="object" string="Approve" class="btn btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action for object pr.approve.wizard -->
+        <record id="action_pr_approve_wizard" model="ir.actions.act_window">
+			<field name="name">PR Approve Wizard</field>
+            <field name="type">ir.actions.act_window</field>
+			<field name="res_model">pr.approve.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+		</record>
+    </data>
+</odoo>

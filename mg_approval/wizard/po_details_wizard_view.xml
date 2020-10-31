@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Form view for object po.details.wizard -->
+        <record model="ir.ui.view" id="assign_po_details_wizard_view">
+            <field name="name">po.details.wizard.form</field>
+            <field name="model">po.details.wizard</field>
+            <field name="arch" type="xml">
+                <form string="PO Details">
+                    <group>
+                        <group>
+                            <field name="po_dt_po_number"/>
+                            <field name="po_dt_supplier_name"/>
+                            <field name="po_dt_vendor_code"/>
+                            <field name="po_dt_pr_amount"/>
+                            <field name="po_dt_issue_date"/>
+                            <field name="po_dt_end_date"/>
+                            <field name="po_dt_delivery_date"/>
+                            <field name="po_dt_biq"/>
+                            <field name="po_dt_saveing_from_biq"/>
+                            <field name="po_dt_remarks"/>
+                            <field name="requisition_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="update" type="object" string="Update" class="btn btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action for object po.details.wizard -->
+        <record id="action_po_details_wizard_wizard" model="ir.actions.act_window">
+			<field name="name">PO Details</field>
+            <field name="type">ir.actions.act_window</field>
+			<field name="res_model">po.details.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+		</record>
+    </data>
+</odoo>

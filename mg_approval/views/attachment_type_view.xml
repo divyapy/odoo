@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="attachment_type_view_tree" model="ir.ui.view">
+        <field name="name">attachment.type.view.tree</field>
+        <field name="model">attachment.type</field>
+        <field name="arch" type="xml">
+            <tree string="Attachment Type">
+            <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="attachment_type_view_form" model="ir.ui.view">
+        <field name="name">attachment.type.view.form</field>
+        <field name="model">attachment.type</field>
+        <field name="arch" type="xml">
+            <form string="Attachment Type Details">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object"
+                        class="oe_stat_button" icon="fa-archive" string="Active">
+                        <field name="active" widget="boolean_button"
+                            options='{"terminology": "archive"}' invisible="1"/>
+                        </button>
+                    </div>
+                    <group name="attachment_type_detail" style="width:50%%">
+                         <field name="name"/>
+                         <field name="attachment_type"/>
+                         <field name="is_mandatory"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers"/>
+                <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="attachment_type_view">
+        <field name="name">Attachment Type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">attachment.type</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem name="Configuration" id="configuration_menu_pr" parent="material_purchase_requisitions.menu_purchase_requisition"
+                sequence="11"/>
+    <menuitem name="Configuration" id="configuration_menu_sourcing" parent="mg_tender.main_sourcing_menu"
+                sequence="14"/>
+    <menuitem name="Configuration" id="configuration_menu_rfq" parent="vendor_portal.menu_vendor_purchase_root"
+                sequence="2"/>
+    <menuitem name="Attachment Type" id="attachment_type_menu_list_pr" parent="configuration_menu_pr"
+              action="attachment_type_view" sequence="12"
+              groups="material_purchase_requisitions.group_purchase_requisition_user"/>
+    <menuitem name="Attachment Type" id="attachment_type_menu_list_sourcing" parent="configuration_menu_sourcing"
+              action="attachment_type_view" sequence="16"
+              groups="material_purchase_requisitions.group_purchase_requisition_user"/>
+    <menuitem name="Attachment Type" id="attachment_type_menu_list_rfq" parent="configuration_menu_rfq"
+              action="attachment_type_view" sequence="3"
+              groups="material_purchase_requisitions.group_purchase_requisition_user"/>
+
+    
+    <menuitem name="Sourcing Configuration" sequence="15"
+      id="sourcing_technical_terms_menu"
+      action="mg_tender.sourcing_menu_action"
+      parent="configuration_menu_sourcing"
+      />
+  </data>
+</odoo>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Form view for object purchase.action.dashboard.wizard -->
+        <record model="ir.ui.view" id="assign_purchase_action_dashboard_wizard_view">
+            <field name="name">purchase.action.dashboard.wizard.form</field>
+            <field name="model">purchase.action.dashboard.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Purchase Action Dashboard">
+                    <group>
+                        <group>
+                            <field name="pr_accept_date"/>
+                            <field name="bid_list_approved_date"/>
+                            <field name="rfq_sent_on"/>
+                            <field name="first_quote_receipt_on"/>
+                            <field name="second_quote_receipt_on"/>
+                            <field name="tr_proposal_submitted_on"/>
+                        </group>
+                        <group>
+                            <field name="tr_approved_on"/>
+                            <field name="target_price_sent_on"/>
+                            <field name="final_quote_receipt"/>
+                            <field name="sourcing_completed_on"/>
+                            <field name="loi_issued_on"/>
+                            <field name="requisition_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="update" type="object" string="Update" class="btn btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action for object purchase.action.dashboard.wizard-->
+        <record id="action_purchase_action_dashboard_wizard" model="ir.actions.act_window">
+			<field name="name">Purchase Action Dashboard</field>
+            <field name="type">ir.actions.act_window</field>
+			<field name="res_model">purchase.action.dashboard.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+		</record>
+    </data>
+</odoo>

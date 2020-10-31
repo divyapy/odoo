@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="attachment_status_view_tree" model="ir.ui.view">
+        <field name="name">attachment.status.view.tree</field>
+        <field name="model">attachment.status</field>
+        <field name="arch" type="xml">
+            <tree string="Attachment Status">
+            <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="attachment_status_view_form" model="ir.ui.view">
+        <field name="name">attachment.status.view.form</field>
+        <field name="model">attachment.status</field>
+        <field name="arch" type="xml">
+            <form string="Attachment Status Details">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object"
+                        class="oe_stat_button" icon="fa-archive" string="Active">
+                        <field name="active" widget="boolean_button"
+                            options='{"terminology": "archive"}' invisible="1"/>
+                        </button>
+                    </div>
+                    <group name="attachment_status_detail" style="width:50%%">
+                         <field name="name"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers"/>
+                <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="attachment_status_view">
+        <field name="name">Attachment Status</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">attachment.status</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem name="Attachment Status" id="attachment_status_menu_list_pr" parent="configuration_menu_pr"
+              action="attachment_status_view" sequence="13"
+              groups="material_purchase_requisitions.group_purchase_requisition_user"/>
+    <menuitem name="Attachment Status" id="attachment_status_menu_list_sourcing" parent="configuration_menu_sourcing"
+              action="attachment_status_view" sequence="17"
+              groups="material_purchase_requisitions.group_purchase_requisition_user"/>
+    <menuitem name="Attachment Status" id="attachment_status_menu_list_rfq" parent="configuration_menu_rfq"
+              action="attachment_status_view" sequence="4"
+              groups="material_purchase_requisitions.group_purchase_requisition_user"/>
+  </data>
+</odoo>

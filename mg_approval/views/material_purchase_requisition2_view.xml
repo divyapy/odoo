@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="material_purchase_requisition2_inherit_form_view">
+        <field name="name">material.purchase.requisition2.inherit.form</field>
+        <field name="model">material.purchase.requisition</field>
+        <field name="inherit_id" ref="mg_approval.material_purchase_requisition_inherit_form_view"/>
+        <field name="arch" type="xml">
+        	<field name="initiator_id" position="after">
+        		<field name="pr_id" invisible="1" />
+        	</field>
+            <xpath expr="//header/button[@name='dashboard']" position='after'>
+            	<button name="launch_sourcing_creation_wizard" type="object" string="Create Sourcing Document" states="approve" class="btn-primary"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position='inside'>
+            	<button class="oe_stat_button" type="object"
+                    name="open_pr" string="Sourcing Document" attrs="{'invisible': [('pr_id', '=', False)]}" icon="fa-external-link"/>
+            </xpath>
+        </field>
+	</record>
+</odoo>

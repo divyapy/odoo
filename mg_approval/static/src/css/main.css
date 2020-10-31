@@ -1,0 +1,12 @@
+.pr_detail{
+    background-color: #E9ECEF;
+}
+.pr_detail_block{
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 0;
+    padding-top: 0.25rem;
+    padding-right: 16px;
+    padding-bottom: 0.25rem;
+    padding-left: 16px;
+}
