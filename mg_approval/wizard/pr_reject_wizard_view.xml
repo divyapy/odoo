@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Form view for object pr.reject.wizard -->
+        <record model="ir.ui.view" id="pr_reject_wizard_view">
+            <field name="name">pr.reject.wizard.form</field>
+            <field name="model">pr.reject.wizard</field>
+            <field name="arch" type="xml">
+                <form string="PR reject">
+                    <group>
+                        <group>
+                            <field name="refused_attachment_id" widget="binary"/>
+                            <field name="refused_comments"/>
+                            <field name="refused_rework"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="reject" type="object" string="Reject" class="btn btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action for object pr.reject.wizard -->
+        <record id="action_pr_reject_wizard" model="ir.actions.act_window">
+			<field name="name">PR Reject Wizard</field>
+            <field name="type">ir.actions.act_window</field>
+			<field name="res_model">pr.reject.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+		</record>
+    </data>
+</odoo>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="procurement_approval_category_action_new_request" model="ir.actions.act_window">
+        <field name="name">Dashboard</field>
+        <field name="res_model">procurement.approval.category</field>
+        <field name="view_mode">kanban</field>
+    </record>
+
+    <record id="procurement_approval_category_action" model="ir.actions.act_window">
+        <field name="name">Procurement Approvals Types</field>
+        <field name="res_model">procurement.approval.category</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="procurement_approval_category_view_tree" model="ir.ui.view">
+        <field name="name">procurement.approval.category.view.tree</field>
+        <field name="model">procurement.approval.category</field>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="procurement_approval_category_view_form" model="ir.ui.view">
+        <field name="name">procurement.approval.category.view.form</field>
+        <field name="model">procurement.approval.category</field>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <field name="image" widget="image" class="oe_avatar" options='{"preview_image": "image", "size": [80, 80]}'/>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="Approvals Type Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="description"/>
+                        <field name="category_type" required="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Options" name="options">
+                            <group>
+                                <group string="Approvers" name="approvers">
+                                    <field name="is_manager_approver"/>
+                                    <field name="user_ids" widget="many2many_tags">
+                                    </field>
+                                    <field name="approval_minimum"/>
+                                    <field name="active" invisible="1"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="procurement_approval_category_view_kanban" model="ir.ui.view">
+        <field name="name">procurement.approval.category.views.kanban</field>
+        <field name="model">procurement.approval.category</field>
+        <field name="arch" type="xml">
+            <kanban create="false" class="o_modules_kanban">
+                <field name="name"/>
+                <field name="id"/>
+                <field name="image"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_module_vignette">
+                            <t t-if="record.id">
+                                <img t-att-src="kanban_image('procurement.approval.category', 'image', record.id.raw_value)" alt="Approvals Types Image"
+                                    class="oe_kanban_avatar float-left mr-3" width="64" height="64"/>
+                            </t>
+                            <div class="oe_module_desc">
+                                <h4 class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </h4>
+                                <p class="oe_module_name">
+                                    <field name="description"/>
+                                </p>
+                                <div class="oe_module_action" t-if="!selection_mode">
+                                    <button type="object" class="btn btn-primary btn-sm" name="create_request" context="{'category_id':'active_id'}">New Request</button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <menuitem
+        id="procurement_approvals_category_menu_config"
+        parent="material_purchase_requisitions.menu_item_purchase_requisition"
+        name="Procurement Approvals Types"
+        groups="group_procurement_approval_manager"
+        sequence="10"/>
+
+    <menuitem
+        id="procurement_approvals_category_menu"
+        parent="procurement_approvals_category_menu_config"
+        name="Procurement Category"
+        action="procurement_approval_category_action"
+        groups="group_procurement_approval_manager"
+        sequence="10"/>
+</odoo>

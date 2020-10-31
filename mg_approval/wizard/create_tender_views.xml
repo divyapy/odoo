@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="create_sourcing_form_view">
+        <field name="name">create.tender.form.view</field>
+        <field name="model">wiz.create.tender</field>
+        <field name="arch" type="xml">
+			<form string="Create Sourcing Document">
+				<group>
+					<group>
+						<field name="pr_type_id" options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+					</group>
+					<group>
+					</group>
+				</group>
+				<footer>
+					<button name="create_sourcing" type="object" string="Create Sourcing Document" class="btn-primary" />
+					<button string="Cancel" class="btn-secondary" special="cancel"/>
+				</footer>
+			</form>
+        </field>
+	</record>
+</odoo>
