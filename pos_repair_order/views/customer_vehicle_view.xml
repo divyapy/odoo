@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		<!-- Form view for object customer.vehicle.brand-->
+		<record id="customer_vehicle_brand_view_form" model="ir.ui.view">
+			<field name="name">customer.vehicle.brand.form</field>
+			<field name="model">customer.vehicle.brand</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Customer Vehicle Brand">
+					<sheet>
+						<group>
+							<group>
+								<field name="brand_name"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<!-- Tree view for object customer.vehicle.brand-->
+		<record id="customer_vehicle_brand_view_tree" model="ir.ui.view">
+			<field name="name">customer.vehicle.brand.tree</field>
+			<field name="model">customer.vehicle.brand</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Customer Vehicle Brand">
+					<field name="brand_name" />
+				</tree>
+			</field>
+		</record>
+
+		<!-- Action for object customer.vehicle.brand-->
+		<record id="action_customer_vehicle_brand" model="ir.actions.act_window">
+			<field name="name">Customer Vehicle Brand</field>
+			<field name="res_model">customer.vehicle.brand</field>
+			<!-- <field name="view_type">form</field> -->
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<!-- Form view for object customer.vehicle.model-->
+		<record id="customer_vehicle_model_view_form" model="ir.ui.view">
+			<field name="name">customer.vehicle.model.form</field>
+			<field name="model">customer.vehicle.model</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Customer Vehicle Model">
+					<sheet>
+						<group>
+							<group>
+								<field name="model_name"/>
+							</group>
+							<group>
+								<field name="brand_id"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<!-- Tree view for object customer.vehicle.model-->
+		<record id="customer_vehicle_model_view_tree" model="ir.ui.view">
+			<field name="name">customer.vehicle.model.tree</field>
+			<field name="model">customer.vehicle.model</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Customer Vehicle Model">
+					<field name="model_name"/>
+					<field name="brand_id"/>
+				</tree>
+			</field>
+		</record>
+
+		<!-- Action for object customer.vehicle.model-->
+		<record id="action_customer_vehicle_model" model="ir.actions.act_window">
+			<field name="name">Customer Vehicle Model</field>
+			<field name="res_model">customer.vehicle.model</field>
+			<!-- <field name="view_type">form</field> -->
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<!-- Form view for object customer.vehicle-->
+		<record id="customer_vehicle_view_form" model="ir.ui.view">
+			<field name="name">customer.vehicle.form</field>
+			<field name="model">customer.vehicle</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Customer Vehicle">
+					<sheet>
+						<div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" name="vehicle_service_order"
+                                    string="Service Order" type="object"
+									icon="fa-bars"/>
+                            <button class="oe_stat_button" name="vehicle_quotation"
+                                    string="Quotation" type="object"
+									icon="fa-bars"/>
+                        </div>
+						<group>
+							<group>
+								<field name="license_number"/>
+								<field name="fuel_type_id"/>
+								<field name="year"/>
+							</group>
+							<group>
+								<field name="model_id"/>
+								<field name="brand_id"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<!-- Tree view for object customer.vehicle-->
+		<record id="customer_vehicle_view_tree" model="ir.ui.view">
+			<field name="name">customer.vehicle.tree</field>
+			<field name="model">customer.vehicle</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Customer Vehicle">
+					<field name="license_number"/>
+					<field name="model_id"/>
+					<field name="brand_id"/>
+					<field name="fuel_type_id"/>
+					<field name="year"/>
+				</tree>
+			</field>
+		</record>
+
+		<!-- Action for object customer.vehicle.model-->
+		<record id="action_customer_vehicle" model="ir.actions.act_window">
+			<field name="name">Customer Vehicle</field>
+			<field name="res_model">customer.vehicle</field>
+			<!-- <field name="view_type">form</field> -->
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<!-- <menuitem id="menu_cr_conf" name="Vehicle Configuration" parent="repair.menu_repair_order" sequence="13"/> -->
+        <menuitem id="menu_customer_vehicle" name="Customer Vehicle" parent="repair.repair_menu_config" action="action_customer_vehicle"/>
+		<menuitem id="menu_cr_vehicle_conf" name="Vehicle Configuration" parent="repair.repair_menu_config"/>
+        <menuitem id="menu_customer_vehicle_model" name="Customer Vehicle Model" parent="menu_cr_vehicle_conf" action="action_customer_vehicle_model"/>
+        <menuitem id="menu_customer_vehicle_brand" name="Customer Vehicle Brand" parent="menu_cr_vehicle_conf" action="action_customer_vehicle_brand"/>
+
+</odoo>

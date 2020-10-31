@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="0">
+        <record model="pos.config" id="point_of_sale.pos_config_main">
+            <field name="order_loading_options">all_orders</field>
+        </record>
+    </data>
+</odoo>

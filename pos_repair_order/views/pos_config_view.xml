@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_repair_order_config_id" model="ir.ui.view">
+        <field name="name">pos.config.conf.form</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <h2>POS Quotes</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="col-xs-12 col-md-6 o_setting_box" title="Select between the option to download quotation in pdf format or print as Xml receipt (POSBOX)">
+                        <div class="o_setting_right_pane">
+                            <label for="quotation_print_type" string="Quotation Print Type"/>
+                            <div class="text-muted">
+                                Quotation print type is used to print quotation as xml receipt(POSBOX) or download quotation receipt in pdf format
+                            </div>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <field name="quotation_print_type"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="send_email_on_save_quotation"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="send_email_on_save_quotation"/>
+                            <div class="text-muted">
+                                Check here to send email to the customer automatically on saving quotation
+                            </div>
+                        </div>
+                    </div>     
+                </div>
+                <h2>Repair/Service Configuration</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <label for="product_id" string="Product to Repair"/>
+                            <div class="text-muted">
+                                Please Select the product that needs repair.
+                            </div>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <field name="product_id" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <label for="location_id" string="Product location"/>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <field name="location_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="location_dest_id" string="Product destionation location"/>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <field name="location_dest_id"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>      -->
+                </div>   
+                <h2>Advance Payment Configuration</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <label for="adv_pymt_product_id" string="Advance Payment Product"/>
+                            <div class="text-muted">
+                                Please Select the product for advance payment.
+                            </div>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <field name="adv_pymt_product_id"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+                <h2>Warehouse Configuration</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <label for="warehouse_id" string="Warehouse"/>
+                            <div class="text-muted">
+                                Please Select the Warehouse
+                            </div>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <field name="warehouse_id"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h2>Stock Transfer</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <label for="po_stock_transfer" string="POS Order Stock Transfer"/>
+                            <div class="text-muted">
+                                Please check this box if you want to immidate stock Transfer after pos order creation.
+                            </div>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <field name="po_stock_transfer"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <label for="ro_stock_transfer" string="Repair Order Stock Transfer"/>
+                            <div class="text-muted">
+                                Please check this box if you want to immidate stock Transfer after repair order creation.
+                            </div>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <field name="ro_stock_transfer"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+                <div class="app_settings_block" data-string="Store Policies" data-key="pos_store_policies">
+                    <h2>Store Policies</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="store_policies" string="Store Policies"/>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="store_policies"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>     
+                </div>
+                <div class="app_settings_block" data-string="Load Quotation Configuration" data-key="pos_load_quotation_configuration">
+                    <h2>Load Quotation Configuration</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="load_with_special_price" string="Load repair order line with product special price"/>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="load_with_special_price"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>     
+                </div>
+                <div class="app_settings_block" data-string="Auto Repair Order Transfer" data-key="pos_auto_repair_order_transfer">
+                    <h2>Auto Repair Order Transfer</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="repair_order_op_type" string="Opeation Type for Auto Repair Order Transfer"/>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="auto_repair_order_transfer"/>
+                                        <field name="repair_order_op_type" attrs="{'invisible': [('auto_repair_order_transfer', '=', False)], 'required': [('auto_repair_order_transfer', '!=', False)]}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>     
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

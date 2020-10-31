@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<template id="assets" inherit_id="point_of_sale.assets">
+			<xpath expr="." position="inside">
+				<script src="/pos_repair_order/static/src/js/selectize.min.js"></script>
+				<link rel="stylesheet" href="/pos_repair_order/static/src/css/selectize.css"/>
+				<script type="text/javascript" src="/pos_repair_order/static/src/js/main.js"></script>
+				<script type="text/javascript" src="/pos_repair_order/static/src/js/jquery.datetimepicker.full.min.js"></script>
+				<link rel="stylesheet" href="/pos_repair_order/static/src/css/main.css" />
+				<link rel="stylesheet" href="/pos_repair_order/static/src/css/pos_quotes.css" />
+				<link rel="stylesheet" href="/pos_repair_order/static/src/css/jquery.datetimepicker.min.css"/>
+			</xpath>
+		</template>
+	</data>
+</odoo>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+	<template id="pos_repair_order_pos_order_report">
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="o">
+				<t t-call="web.external_layout">
+					<div class="page">
+						<div class="row">
+							<div class="col-12">
+								<t t-if="o.partner_id">														
+									<t t-set="address">
+										<div t-field="o.partner_id"
+											t-options='{"widget": "contact", "fields": ["address", "name", "phone"]}' />
+										<p t-if="o.partner_id.vat"><t t-esc="o.company_id.country_id.vat_label or 'Tax ID'"/>: <span t-field="o.partner_id.vat"/></p>
+									</t>
+								</t>
+								<br/>
+								<h4>
+									<span>Order # </span>
+									<span t-field="o.name"/>
+								</h4>						
+								<t t-if="o.employee_id.name">
+									<b>Cashier:</b> <span t-field="o.employee_id.name"/><br/>
+								</t>
+								<br/>
+							</div>
+						</div>
+						<div class="row"></div>
+						<table class="table table-condensed">
+							<thead>
+								<tr>
+									<th>Description</th>
+									<th class="text-right">Quantity</th>
+									<th class="text-right">Unit Price</th>
+									<th class="text-right">Discount</th>
+									<th class="text-right">Price</th>
+								</tr>
+							</thead>
+							<tbody class="sale_tbody">
+								<t t-foreach="o.lines" t-as="l">
+									<tr t-if="l.qty">
+										<td>
+										<span t-field="l.product_id.name"/>
+										<t t-if="l.product_id.barcode">
+										(<span t-field="l.product_id.barcode"/>)
+										</t>
+										</td>
+										<td class="text-right">
+											<span t-field="l.qty"/>
+										</td>
+										<td class="text-right">
+											<span t-field="l.price_unit"/>
+										</td>
+										<td class="text-right">
+											<t t-if="l.discount != 0.0">
+												<span t-esc="l.discount"/>%
+											</t>
+										</td>
+										<td class="text-right">
+											<span t-field="l.price_subtotal_incl"/>
+										</td>
+									</tr>
+								</t>
+							</tbody>
+						</table>
+						<div class="row">
+							<div class="col-6  ml-auto">
+								<table class="table table-condensed">
+									<tr class="border-black">
+										<td><strong>Taxes</strong></td>
+										<td class="text-right">
+											<strong t-esc="o.amount_tax" t-options="{'widget': 'monetary', 'display_currency': o.pricelist_id.currency_id}"/>
+										</td>
+									</tr>
+									<tr>
+										<td><strong>Total</strong></td>
+										<td class="text-right">
+											<strong t-esc="o.amount_total" t-options="{'widget': 'monetary', 'display_currency': o.pricelist_id.currency_id}"/>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<br/>
+						<t t-if="o.payment_ids">
+							<table class="table table-condensed">
+								<thead>
+									<tr>
+										<th>Payment Mode</th>
+										<th>Amount</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr t-foreach="o.payment_ids" t-as="d">
+										<td>
+											<span t-esc="d.payment_method_id.name"/>
+										</td>
+										<td>
+											<span t-esc="o.order_formatLang(d['amount'], currency_obj=res_company.currency_id)"/>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</t>
+						<t t-if="o.session_id.config_id.store_policies">
+							<div>
+								<br/>
+								<h4>Store Policies</h4>
+								<p>
+									<t t-foreach="o.cal_string(o.session_id.config_id.store_policies)" t-as="string">
+										<span t-esc="string"/>.<br/>
+									</t>
+								</p>
+							</div>
+						</t>
+					</div>
+				</t>
+			</t>
+		</t>
+	</template>
+</data>
+</odoo>

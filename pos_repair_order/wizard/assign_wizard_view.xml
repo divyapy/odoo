@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Form view for object assign.mechanic.wizard-->
+        <record model="ir.ui.view" id="assign_mechanic_wizard_view">
+            <field name="name">assign.mechanic.wizard.form</field>
+            <field name="model">assign.mechanic.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Assign Mechanic">
+                    <group>
+                        <group>
+                            <field name="mechanic_ids" required="1" widget="many2many_tags" width="0.5" optional="hide"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="assign_mechanic" type="object" string="Assign" class="btn btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action for object assign.mechanic.wizard-->
+        <record id="action_assign_mechanic_wizard" model="ir.actions.act_window">
+			<field name="name">Assign Mechanic</field>
+            <field name="type">ir.actions.act_window</field>
+			<field name="res_model">assign.mechanic.wizard</field>
+			<!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+		</record>
+
+        <!-- Form view for object assign.bay.wizard-->
+        <record model="ir.ui.view" id="assign_bay_wizard_view">
+            <field name="name">assign.bay.wizard.form</field>
+            <field name="model">assign.bay.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Assign Bay">
+                    <group>
+                        <group>
+                            <field name="bay_id" required="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="assign_bay" type="object" string="Assign" class="btn btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action for object assign.bay.wizard-->
+        <record id="action_assign_bay_wizard" model="ir.actions.act_window">
+			<field name="name">Assign Bay</field>
+            <field name="type">ir.actions.act_window</field>
+			<field name="res_model">assign.bay.wizard</field>
+			<!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+		</record>
+
+    </data>
+</odoo>

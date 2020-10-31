@@ -1,0 +1,901 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+	<t t-extend="ClientDetails">
+		<t t-jquery="div.edit-buttons" t-operation="prepend">
+			<div class='control-button view_quotations' t-att-data-id='partner.id' style="margin-bottom:0px;">View Quotations</div>
+		</t>
+	</t>
+
+    <t t-extend="ProductScreenWidget">  
+        <t t-jquery='.pad_tg' t-operation='after'>
+			<span class="control-button" id="all_quotations" style="width:383px;margin-right:4px;margin-top: 2px;margin-bottom: -7px;margin-left: 6px;">
+				Quotation/Service Order
+			</span>
+		</t>	
+	</t>
+
+    <t t-name="QuotationListScreenWidget">
+		<div class="clientlist-screen screen">
+			<div class="orders-screen-content">
+				<section class="top-content">
+					<span class='button back'>
+						<i class='fa fa-angle-double-left'></i>
+						Back
+					</span>
+					<span class='button wk_load_quotation'>
+						Load Quotation
+						<i class='fa fa-angle-double-right'></i>
+					</span>
+				</section>
+				<span class="searchbox quotesearchbox">
+					<input placeholder="Search Quotation" class="quotation_search"/>
+					<span class="search-clear"></span>
+				</span>
+				<section class="full-content">
+					<div class='window'>
+						<section class='subwindow collapsed' style="display: inline-block !important;">
+							<div class='wk_subwindow-container collapsed'>
+								<div class='subwindow-container-fix quotation-details-content'>
+								</div>
+							</div>
+						</section>
+						<section class='subwindow all_quotation_data_table'>
+							<div class='subwindow-container-fix touch-scrollable scrollable-y'>
+								<table class='wk_quotation_table'>
+									<thead>
+										<tr class="wk_quotation_table_header" style="background-color: rgb(188, 214, 216);">
+											<th class="all_quotation_table_data">Quotation</th>
+											<th class="all_quotation_table_data">Type</th>	
+											<th class="all_quotation_table_data">Date</th>
+											<th class="all_quotation_table_data">Customer</th>
+											<th class="all_quotation_table_data">Total</th>
+											<th class="all_quotation_table_data">Advance Payment</th>	
+											<th class="all_quotation_table_data">POS Order</th>	
+											<th class="all_quotation_table_data">Status</th>
+											<th class="all_quotation_table_data">Cancel</th>
+											<th class="all_quotation_table_data">Refund</th>
+											<!-- <th class="all_quotation_table_data">PO-Refund</th> -->
+										</tr>
+									</thead>
+									<tbody class='quotation-list-contents'>
+									</tbody>
+								</table>
+							</div>
+						</section>
+					</div>
+				</section>
+			</div>
+		</div>
+	</t>
+
+    <t t-name="WkQuotationLine">
+		<tr class="quotation-line" t-att-data-id='quotation.name'>
+			<td class="all_quotation_table_data" style="user-select: text;"><t t-esc='quotation.name' /></td>
+			<td class="all_quotation_table_data"><t t-esc='quotation.repair_type' /></td>
+			<td class="all_quotation_table_data"><t t-esc='quotation.date_order' /></td>
+			<td class="all_quotation_table_data"><t t-esc='quotation.partner_id[1]' /></td>
+			<td class="all_quotation_table_data"><t t-esc='widget.format_currency(quotation.amount_total)' /></td>
+			<td class="all_quotation_table_data" style="user-select: text;">
+                <t t-if="quotation.pos_order_id">
+                    <t t-esc='quotation.pos_order_id[1]'/>
+                    <t t-if='quotation.adv_pymt_amt > 0'>
+                        <b>(<t t-esc='quotation.adv_pymt_amt'/>)</b>
+                    </t>
+                </t>
+            </td>
+            <td class="all_quotation_table_data" style="user-select: text;">
+                <t t-if="quotation.final_pos_order_id">
+                    <t t-esc='quotation.final_pos_order_id[1]'/>
+                </t>
+            </td>
+			<td class="all_quotation_table_data"><t t-esc='quotation.state' /></td>
+			<td class="all_quotation_table_data">
+                <t t-if="quotation.state == 'Draft' or quotation.state ==  'Confirmed'">
+                    <button class='cancel_repair_order confirm' t-att-id='quotation.name'>Cancel</button>
+                </t>
+            </td>
+            <td class="all_quotation_table_data">
+                <t t-if='quotation.final_pos_order_id[0]'>
+                    <button class='refund_repair_order confirm' t-att-id='quotation.final_pos_order_id[0]'>Refund</button>
+                </t>
+                <t t-elif='quotation.pos_order_id[0]'>
+                    <button class='refund_repair_order confirm' t-att-id='quotation.pos_order_id[0]'>Refund</button>
+                </t>
+            </td>
+		</tr>
+	</t>
+
+    <t t-name="QuotationSavedPopopWidget">
+		<div class="modal-dialog">
+			<div class="popup popup-textinput" style="border-radius:5px; height:210px" >
+				<div class="order_status" style="height:80px;width:80px;margin-top:42px">
+					<div class="show_tick draw"></div>
+				</div>
+				<h2 id="quotation_status" style="color:#5cb85c"><t t-esc="widget.options.quotation_status || 'Quotation Saved !!!!!'"/></h2>
+			</div>
+		</div>
+	</t>
+
+	<t t-extend="ProductScreenWidget">
+        <t t-jquery='.pad_tg' t-operation='after'>
+            <div class="row pos_repair_order_buttons">
+                <div class="col-md-6 pos_repair_order_button">
+                    <span class="control-button" id="save_order" style="width:175px;margin-left:-5px;margin-top: 2px;margin-bottom: -1px;font-size: 12px;font-weight: bold;">
+                        SAVE Quotation/Service Order
+                    </span>
+                </div>
+                <div class="col-md-6 pos_repair_order_button">
+                    <span class="control-button" id="load_quotation" style="width:175px;margin-right:-5px;margin-top: 2px;margin-bottom: -1px;font-size: 12px;font-weight: bold;">
+                        LOAD Quotation/Service Order
+                    </span>
+                </div>
+            </div>
+        </t>
+	</t>
+
+    <t t-extend="PaymentScreenWidget">
+        <t t-jquery=".next" t-operation="before">
+            <span class='button adv_pymt_validate' id='adv_pymt_validate' style="right:0%;">
+                Adv. Pymt
+                <i class='fa fa-angle-double-right'></i>
+            </span>
+		</t>
+        <t t-jquery=".back" t-operation="after">
+            <span class='button adv_pymt_back' id='adv_pymt_back' style="left:0%;">
+                <i class='fa fa-angle-double-left'></i>
+                Order Back
+            </span>
+		</t>
+        <t t-jquery=".next" t-operation="before">
+            <h2 id='repair_name_info' />
+		</t>
+    </t>
+
+    <t t-name="VehicleInformationWidget">
+        <t t-log="data"/>
+        <t t-if="data.v_brand">
+            <div class='client-detail'>
+                <div class="input_label"><span class='label' style="text-align: left;">Brand</span></div>
+                <div class="input_data"><span class='detail client-address' ><t t-esc="data.v_brand"/></span></div>
+            </div>
+        </t>
+        <t t-if="data.v_model">
+            <div class='client-detail'>
+                <div class="input_label"><span class='label' style="text-align: left;">Model</span></div>
+                <div class="input_data"><span class='detail client-address' ><t t-esc="data.v_model"/></span></div>
+            </div>
+        </t>
+        <t t-if="data.v_fuel_type">
+            <div class='client-detail'>
+                <div class="input_label"><span class='label' style="text-align: left;">Fuel Type</span></div>
+                <div class="input_data"><span class='detail client-address' ><t t-esc="data.v_fuel_type"/></span></div>
+            </div>
+        </t>
+        <t t-if="data.v_l_num">
+            <div class='client-detail'>
+                <div class="input_label"><span class='label' style="text-align: left;">Number</span></div>
+                <div class="input_data"><span class='detail client-address'><t t-esc='data.v_l_num'/></span></div>
+            </div>
+        </t>
+        <t t-if="data.v_model_year">
+            <div class='client-detail'>
+                <div class="input_label"><span class='label' style="text-align: left;">Year</span></div>
+                <div class="input_data"><span class='detail client-address'><t t-esc='data.v_model_year'/></span></div>
+            </div>
+        </t>
+    </t>
+
+    <t t-name="PrErrorNotifyPopopWidget">
+		<div class="modal-dialog">
+			<div class="pr-alert" style="border-radius:5px;width:550px; height:250px">
+				<center>
+					<div class="wk_mark">
+					</div>
+					<h2><t t-esc="widget.options.title ||'Error !!!'"/></h2>
+					<p><t t-esc="widget.options.body ||''"/></p>
+					<div>
+						<button class="button cancel" style="margin-top:0px">Ok</button>
+					</div>
+				</center>
+			</div>
+		</div>
+	</t>
+
+    <!-- <t t-name="CancelConfirmationPopup">
+		<div class="modal-dialog">
+			<div class="pr-alert" style="border-radius:5px;width:550px; height:250px">
+				<center>
+					<div>
+                        Repair Order/ Quotation:<span class="repair_name_popup"><t t-esc="widget.options.repair_name"/></span>
+                        Screen Name:<span class="screen_name_popup"><t t-esc="widget.options.screen_name"/></span>
+					</div>
+					<div>
+						<button class="button ok_cancel_order" style="margin-top:0px">OK</button>
+						<button class="button cancel" style="margin-top:0px">Cancel</button>
+					</div>
+				</center>
+			</div>
+		</div>
+	</t> -->
+
+    <t t-name="CancelConfirmationPopup">
+        <div class="modal-dialog">
+            <div class="pr-cancel-alert">
+                    <div style="font-size:18px; color:#555555; font-weight:600; margin-bottom:10px; margin-top:10px;">
+                        Repair Order/ Quotation:<span style="margin:5px;" class="repair_name_popup"><t t-esc="widget.options.repair_name"/></span><br/>
+                        <div style="display:none;"><span style="margin:5px;" class="screen_name_popup"><t t-esc="widget.options.screen_name"/></span></div>
+                    </div>
+                    <div>
+                        <button class="button ok_cancel_order">OK</button>
+                        <button class="button cancel">Cancel</button>
+                    </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="RepairOrderSavedPopopWidget">
+		<div class="modal-dialog">
+			<div class="popup popup-textinput" style="border-radius:5px; height:210px" >
+				<div class="order_status" style="height:80px;width:80px;margin-top:42px;">
+					<div class="show_tick draw"></div>
+				</div>
+				<h2 id="quotation_status" style="color:#5cb85c">Repair Order (<t t-esc="widget.options.repair_name"/>) Saved !!!!!</h2>
+			</div>
+		</div>
+	</t>
+
+	<t t-name="NewOrdersScreenWidget">        
+    	<div class="clientlist-screen screen">
+            <div class="orders-screen-content">
+                <section class="top-content">
+                    <div class="container">
+                        <div class="row line-buttons">
+                            <div class="col-md-6">
+                                <span class='line-button back'>
+                                    <i class='fa fa-angle-double-left'></i>
+                                    Back
+                                </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class='line-button save order-buttons' id='wk_save_quotation'>
+                                    Save
+                                </span>
+                                <span class='line-button save_print order-buttons' id='wk_save_print_quotation'>
+                                    Save and Print
+                                </span>
+                                <span class='line-button adv_pymt order-buttons' id='wk_save_adv_quotation'>
+                                    Advance Payment
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="full-content">
+                    <div class='window'>
+                        <section class='subwindow collapsed'>
+                            <div class='subwindow-container collapsed'>
+                                <div class='subwindow-container-fix order-details-contents'>
+                                </div>
+                            </div>
+                        </section>
+                        <section class='subwindow'>
+                            <div class='wk_table_back subwindow-container'>
+                                <div class='subwindow-container-fix' style="background-color: rgb(240, 238, 238);">
+                                    <div class="row static-order-details">
+                                        <div class="col-md-4 static-order-detail">
+                                            <h1>Basic Info:
+                                                <t t-if="repair_name">
+                                                    <t t-esc="repair_name"/>
+                                                </t>
+                                            </h1>
+                                            
+                                            <div class='client-detail'>
+                                                <div class="input_label"><span class='label' style="text-align: left;">Type</span></div>
+                                                <div class="input_data">
+                                                    <span class='detail client-address'>
+                                                        <!-- <select class='order_type' id='order_types' name='order_type'>
+                                                            <option value='service'>Service Order</option>
+                                                            <option value='quote'>Quotation</option>
+                                                        </select> -->
+                                                        <t t-if="order_types == 'service'">
+                                                            <input type='radio' name='order_types' class='op_type_pickup' value='service' checked="checked"/> Service Order
+                                                            <input type='radio' name='order_types' class='op_type_deliver' value='quote' /> Quotation
+                                                        </t>
+                                                        <t t-elif="order_types == 'quote'">
+                                                            <input type='radio' name='order_types' class='op_type_pickup' value='service'/> Service Order
+                                                            <input type='radio' name='order_types' class='op_type_deliver' value='quote' checked="checked"/> Quotation
+                                                        </t>
+                                                        <t t-else="">
+                                                            <input type='radio' name='order_types' class='op_type_pickup' value='service' checked="checked"/> Service Order
+                                                            <input type='radio' name='order_types' class='op_type_deliver' value='quote' /> Quotation
+                                                        </t>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <t t-if="partner_id != '-'">
+                                                <div class='client-detail'>
+                                                    <div class="input_label"><span class='label' style="text-align: left;">Customer</span></div>
+                                                    <div class="input_data"><span class='detail client-address' ><t t-esc="partner_id"/></span></div>
+                                                </div>
+                                            </t>
+                                            <t t-if="partner_phone != '' and partner_phone != '-'">
+                                                <div class='client-detail'>
+                                                    <div class="input_label"><span class='label' style="text-align: left;">Phone</span></div>
+                                                    <div class="input_data"><span class='detail client-address' ><t t-esc="partner_phone"/></span></div>
+                                                </div>
+                                            </t>
+                                            <div class='client-detail'>
+                                                <div class="input_label"><span class='label' style="text-align: left;">Date</span></div>
+                                                <div class="input_data"><span class='detail client-address'><t t-esc='date'/></span></div>
+                                            </div>
+                                            <br/>
+                                            <div class='client-detail'>
+                                                <div class="input_label"><span class='label' style="text-align: left;">Note</span></div>
+                                                <div class="input_data">
+                                                    <span class='detail client-address' >
+                                                        <textarea class="order_note" id="note" name="note" rows="3" cols="30"  style="font-size: 10pt" t-esc="notes"></textarea>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 static-order-detail vehcile_tab">
+                                            <h1>Vehicle Info</h1>
+                                            <div class='client-detail' style="margin-bottom:3px;">
+                                                <div class="input_label"><span class='label' style="text-align: left;">Operation Type</span></div>
+                                                <div class="input_data">
+                                                    <span class='detail client-id'>
+                                                        <t t-if="operation_type == 'pickup'">
+                                                            <input type='radio' name='operation_type' class='op_type_pickup' value='pickup' checked="checked"/> Pickup
+                                                            <input type='radio' name='operation_type' class='op_type_deliver' value='deliver' /> Deliver
+                                                        </t>
+                                                        <t t-elif="operation_type == 'deliver'">
+                                                            <input type='radio' name='operation_type' class='op_type_pickup' value='pickup' /> Pickup
+                                                            <input type='radio' name='operation_type' class='op_type_deliver' value='deliver' checked="checked"/> Deliver
+                                                        </t>
+                                                        <t t-else="">
+                                                            <input type='radio' name='operation_type' class='op_type_pickup' value='pickup' checked="checked"/> Pickup
+                                                            <input type='radio' name='operation_type' class='op_type_deliver' value='deliver' /> Deliver
+                                                        </t>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class='client-detail'>
+                                                <div class="input_label"><span class='label' style="text-align: left;">Delivery Date</span></div>
+                                                <div class="input_data">
+                                                <script>
+                                                    $(document).ready(function () {
+                                                        $('#delivery_date').datetimepicker();
+                                                    });
+                                                </script>
+                                                    <span class='detail client-id'>
+                                                        <t t-log="delivery_date"/>
+                                                        <input type="text" id="delivery_date" t-att-value="delivery_date"/>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class='client-detail'>
+                                                <div class="input_label"><span class='label' style="text-align: left;">Odometer Reading</span></div>
+                                                <div class="input_data">
+                                                    <span class='detail client-id'>
+                                                        <input type="text" id="odoo_meter" t-att-value="odoo_meters"/>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class='client-detail vehcile_drop_down'>
+                                                <div class="input_label"><span class='label'>Vehicle</span></div>
+                                                <div class="input_data" id="vehicle_add" style="display:inline-block; width:39%">
+                                                    <script type="text/javascript">
+                                                        $(document).ready(function () {
+                                                            $('#client-vehicle').selectize({
+                                                                sortField: 'text'
+                                                            });
+                                                        });
+                                                    </script>
+                                                    <select class="client-vehicles vehicle_num_dd" id="client-vehicle">
+                                                        <option value=''></option>
+                                                        <t t-foreach='widget.pos.vehicles' t-as='vehicle'>
+                                                            <t t-log="client_vehicle"/>
+                                                            <t t-if="client_vehicle">
+                                                                <option t-att-value='vehicle.id' t-att-selected="vehicle.id ? ((vehicle.id === client_vehicle) ? true : undefined) : undefined">
+                                                                    <t t-esc="vehicle.license_number"/>
+                                                                </option>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <option t-att-value='vehicle.id'>
+                                                                    <t t-esc="vehicle.license_number"/>
+                                                                </option>
+                                                            </t>
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="client-detail vehcile_info_tab">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 static-order-detail">
+                                            <h1>Payment Info</h1>
+                                            <div class='client-detail'>
+                                                <div class="input_label"><span class='label' style="text-align: left;">Subtotal Amount</span></div>
+                                                <div class="input_data">
+                                                    <span class='detail client-id'>
+                                                        <t t-esc='widget.pos.currency.symbol'/>
+                                                        <t t-esc='total_without_tax'/>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class='client-detail'>
+                                                <div class="input_label"><span class='label' style="text-align: left;">Tax Amount</span></div>
+                                                <div class="input_data">
+                                                    <span class='detail client-id'>
+                                                        <t t-esc='widget.pos.currency.symbol'/>
+                                                        <t t-esc='total_tax'/>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class='client-detail'>
+                                                <h2>
+                                                    <div class="input_label">
+                                                        <span class='label' style="text-align: left;">Total</span>
+                                                    </div>
+                                                    <div class="input_data">
+                                                        <span class='detail client-id'>
+                                                            <t t-esc='widget.pos.currency.symbol'/>
+                                                            <t t-esc='total_with_tax'/>
+                                                        </span>
+                                                    </div> 
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row dynamic-order-details">
+                                        <t t-if="stock">
+                                            <table class='client-list wk_order_list_parts'>
+                                                <thead>
+                                                    <tr style="background-color: rgb(135, 160, 166);color: white;">
+                                                        <th style="text-align:left;width: 35%;">Product / Parts</th>
+                                                        <th style="width: 10%;">Quantity</th>
+                                                        <th style="width: 15%;">Taxes</th>
+                                                        <th style="width: 10%;">Unit Price</th>
+                                                        <th style="width: 10%;">Discount(%)</th>
+                                                        <th style="width: 10%;">Price</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class='wk-order-stock-list-contents'>
+                                                </tbody>
+                                            </table>
+                                            <br/>
+                                        </t>
+                                        <t t-if="service">
+                                            <table class='client-list wk_order_list_operations'>
+                                                <thead>
+                                                    <tr style="background-color: rgb(135, 160, 166);color: white;">
+                                                        <th style="text-align:left;width: 35%;">Product/ Operations</th>
+                                                        <th style="width: 10%;">Quantity</th>
+                                                        <th style="width: 15%;">Taxes</th>
+                                                        <th style="width: 10%;">Unit Price</th>
+                                                        <th style="width: 10%;">Discount(%)</th>
+                                                        <th style="width: 10%;">Price</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class='wk-order-service-list-contents'>
+                                                </tbody>
+                                            </table>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </t>
+    
+    <t t-name="WkOrderLineStock"> 
+        <tr class='wk-order-line' t-att-data-id='orderlines.id' style="cursor:pointer;">
+            <td><t t-esc='orderlines.display_name' /></td>
+            <td><t t-esc='orderlines.quantity' /></td>
+            <td>
+                <t t-if="orderlines.taxes.length gt 1">
+                    <ul>
+                        <t t-foreach='orderlines.taxes' t-as='tax'>
+                            <li id='tax_item'>
+                                <t t-esc='tax'/>
+                            </li>
+                        </t>
+                    </ul>
+                </t>
+            </td>
+            <td><t t-esc="orderlines.unit_price || '-'" /></td>
+            <td><t t-esc='orderlines.discount' /></td>
+            <td><t t-esc='orderlines.price' /></td>
+        </tr>
+    </t>
+
+    <t t-name="WkOrderLineService">
+        <tr class='wk-order-line' t-att-data-id='orderlines.id' style="cursor:pointer;">
+            <td><t t-esc='orderlines.display_name' /></td>
+            <td><t t-esc='orderlines.quantity' /></td>
+            <td>
+                <t t-if="orderlines.taxes.length gt 1">
+                    <ul>
+                        <t t-foreach='orderlines.taxes' t-as='tax'>
+                            <li id='tax_item'>
+                                <t t-esc='tax'/>
+                            </li>
+                        </t>
+                    </ul>
+                </t>
+            </td>
+            <td><t t-esc="orderlines.unit_price || '-'" /></td>
+            <td><t t-esc='orderlines.discount' /></td>
+            <td><t t-esc='orderlines.price' /></td>
+        </tr>
+    </t>
+
+    <t t-name="OrderQuotationXmlReceipt">
+		<receipt align='center' width='40' value-thousands-separator=''>
+			<t t-if='company.name'>
+				<h1><t t-esc='company.name' /></h1>
+				<br/>
+			</t>
+			<t t-if='order.repair_id'>
+                <div>
+                    <h3>Quotation:<t t-esc='order.repair_id' /></h3>
+                </div>
+            </t>
+			<div font='b'>
+				<t t-if='company.contact_address'>
+					<div>
+						<t t-esc='company.contact_address' />
+					</div>
+				</t>
+				<t t-if='company.phone'>
+					<div>Tel:
+						<t t-esc='company.phone' />
+					</div>
+				</t>
+				<t t-if='company.vat'>
+					<div>VAT:
+						<t t-esc='company.vat' />
+					</div>
+				</t>
+				<t t-if='company.email'>
+					<div>
+						<t t-esc='company.email' />
+					</div>
+				</t>
+				<t t-if='company.website'>
+					<div>
+						<t t-esc='company.website' />
+					</div>
+				</t>
+				<t t-if='date'>
+					<div>
+						<t t-esc='date' />
+					</div>
+				</t>
+				<t t-if='header'>
+					<div>
+						<t t-esc='header' />
+					</div>
+				</t>
+				<t t-if='curr_user'>
+					<div class='cashier'>
+						<div>--------------------------------</div>
+						<div>User
+							<t t-esc='curr_user' />
+						</div>
+					</div>
+				</t>
+				<t t-if='company.from_session'>
+					<div>From POS:
+						<t t-esc='company.from_session' />
+					</div>
+				</t>
+                <t t-if='odometer_reading'>
+					<div>Odometer Reading:
+						<t t-esc='odometer_reading' />
+					</div>
+				</t>
+                <t t-if='vehicle.l_num'>
+					<div>License Number:
+						<t t-esc='vehicle.l_num' />
+					</div>
+				</t>
+                <t t-if='vehicle.brand'>
+					<div>Brand:
+						<t t-esc='vehicle.brand' />
+					</div>
+				</t>
+                <t t-if='vehicle.model'>
+					<div>Model:
+						<t t-esc='vehicle.model' />
+					</div>
+				</t>
+                <t t-if='vehicle.fuel_type'>
+					<div>Fuel Type
+						<t t-esc='vehicle.fuel_type' />
+					</div>
+				</t>
+			</div>
+			<br />
+			<br />
+			<!-- Orderlines -->
+			<table class='receipt-orderlines'>
+                <colgroup>
+                    <col width='50%' />
+                    <col width='25%' />
+                    <col width='25%' />
+                </colgroup>
+                <tr t-foreach="orderlines" t-as="orderline">
+                    <td>
+                        <t t-esc="orderline.get_product().display_name"/>
+                         <t t-if="orderline.get_discount() > 0">
+                            <div class="pos-disc-font">
+                                With a <t t-esc="orderline.get_discount()"/>% discount
+                            </div>
+                        </t>
+                    </td>
+                    <td class="pos-right-align">
+                        <t t-esc="orderline.get_quantity_str_with_unit()"/>
+                    </td>
+                    <td class="pos-right-align">
+                        <t t-esc="widget.format_currency(orderline.get_display_price())"/>
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <table class='receipt-total'>
+                <tr>
+                    <td>Subtotal:</td>
+                    <td class="pos-right-align">
+                        <t t-esc="widget.format_currency(order.get_total_without_tax())"/>
+                    </td>
+                </tr>
+                <t t-foreach="order.get_tax_details()" t-as="taxdetail">
+                    <tr>
+                        <td><t t-esc="taxdetail.name" /></td>
+                        <td class="pos-right-align">
+                            <t t-esc="widget.format_currency(taxdetail.amount)" />
+                        </td>
+                    </tr>
+                </t>
+                <tr>
+                    <t t-if="order.get_total_discount() > 0">
+                        <td>Discount:</td>
+                        <td class="pos-right-align">
+                            <t t-esc="widget.format_currency(order.get_total_discount())"/>
+                        </td>
+                    </t>
+                </tr>
+                <tr class="emph">
+                    <td>Total:</td>
+                    <td class="pos-right-align">
+                        <t t-esc="widget.format_currency(order.get_total_with_tax())"/>
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <table class='receipt-paymentlines'>
+                <t t-foreach="paymentlines" t-as="line">
+                  <tr>
+                      <td>
+                          <t t-esc="line.name"/>
+                      </td>
+                      <td class="pos-right-align">
+                          <t t-esc="widget.format_currency(line.get_amount())"/>
+                      </td>
+                  </tr>
+                </t>
+            </table>
+            <br />
+            <table class='receipt-change'>
+                <tr><td>Change:</td><td class="pos-right-align">
+                    <t t-esc="widget.format_currency(order.get_change())"/>
+                    </td></tr>
+            </table>
+		</receipt>
+	</t>
+    
+    <t t-name="LoadRepairOrderPopupWidget">
+		<div class="modal-dialog">
+			<div class="popup popup-textinput">
+				<div class='title'>
+					Load Quotation
+				</div>
+				<div style="padding: 2%;height: 64%;margin-top:-4%;background-color:#d1d9da">
+					<table width="80%" style='margin-left: 10%;margin-right:10%;margin-top: 2%;'>
+						<tr>
+							<td>
+								<b>Quote Id:</b>
+							</td>
+							<td>
+								<input id='load_repair_id' class='detail' style="relative" placeholder='--Quotation Identifier--'></input>
+								<div class='suggest-holder'>  
+								    <ul>
+									    <li t-att-id_val='repair_id'>
+									    <span class='suggest-name'><t t-esc="repair_id"/></span>
+									    </li>
+								    	
+								    </ul>
+								</div>
+							</td>
+						</tr>
+						
+					</table>
+					<div class="repair_details" width="80%" style='color: rgb(59, 79, 43); font-size: smaller; height: 75px; padding: 6%; text-align: justify; margin-top: 7%; background-color: rgb(186, 224, 155);display:none;' >
+                        <table>
+                            <tr>
+                                <td>
+                                    <div style="font-size:16px;margin-left:11px; width:170px;height:20px ">Customer :</div>
+                                </td>
+                                <td>
+                                    <div class="repair_customer_name" style="font-size:16px;padding-left:10px"/>
+                                </td>
+                            </tr>
+							<tr>
+                                <td>
+                                    <div  style="font-size:16px;margin-left:11px; width:170px;height:20px">Date :</div>
+                                </td>
+                                <td>
+                                    <div class="repair_order_date" style="font-size:16px;padding-left:10px"/>
+                                </td>
+                            </tr>
+							<tr>
+                                <td>
+                                    <div  style="font-size:16px;margin-left:11px; width:170px;height:20px">Total Amount :</div>
+                                </td>
+                                <td>
+                                    <div class="repair_amount_total" style="font-size:16px;padding-left:10px"/>
+                                </td>
+                            </tr>
+							<tr>
+                                <td>
+                                    <div  style="font-size:16px;margin-left:11px; width:170px;height:20px">Status :</div>
+                                </td>
+                                <td>
+                                    <div class="repair_repair_status" style="font-size:16px;padding-left:10px"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+					<div style="margin-top:35%;height:50%">
+						<span class="fa fa-warning" id='repair_id_error' style='width:100%;color: rgb(159, 87, 0); font-size: initial; height: 20%; text-align:center;padding-top: 1.3%; background-color: rgb(254, 239, 179);display:none;'>
+						</span>		
+					</div>						
+							
+				</div>
+				<div class="footer">
+					<div id='load_repair_order' class="button">
+						Load
+					</div>
+					<div id='wk_cancel' class="button cancel">
+						Cancel
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+    <t t-extend="OrderReceipt" >
+        <t t-jquery=".pos-receipt-order-data" t-operation="replace">
+            <div class="pos-receipt-order-data">
+                <t t-if="order.repair_name != '' and order.adv_pymt_data">
+                    <div>Quotation:<t t-esc="order.repair_name"/></div>
+                    <div><t t-esc='receipt.name' /></div>
+                </t>
+                <t t-elif="order.repair_name != ''">
+                    <div>Quotation:<t t-esc="order.repair_name"/></div>
+                </t>
+                <div><t t-esc='receipt.date.localestring'/></div>
+                <t t-if="pos.config.store_policies">
+                    <div class="store-policies" style="text-align:center;">
+                        <h4>Store Policies</h4>
+                        <h4 style="text-align:left;">
+                            <t t-foreach="order.cal_string(pos.config.store_policies)" t-as="str">
+                                <t t-esc='str'/>.<br/>
+                            </t>
+                        </h4>
+                    </div>
+                </t>
+            </div>
+        </t>
+        <t t-jquery=".cashier" t-operation="append">
+            <t t-esc="order.name"/>
+            <div class="customer-details" style="text-align:left;">
+                <br/>
+                <t t-if="order.get_client()">
+                    <t t-log="order.get_client()"/>
+                    Customer: <t t-esc="order.get_client().name"/><br />
+                </t>
+                <t t-if="order.get_client()">
+                    Address: <t t-esc="order.get_client().address"/><br />
+                </t>
+                <t t-if="order.get_client()">
+                    Phone: <t t-esc="order.get_client().phone"/><br />
+                </t>
+            </div>
+        </t>
+	</t>
+
+    <t t-name="NotAvailableInPosPopupWidget">
+		<div class="modal-dialog">
+			<div class="popup popup-textinput" style="width:700px;height:400px">
+				<div class='title' style="margin-bottom:0px">
+					Products that are Not Available in POS (<t t-esc="widget.options.repair_name"/>)
+				</div>
+				<div class="subwindow-container-fix" style="height:210px;">
+					<table class="product_info" style="text-align:left;background:#e4e2e2" >
+						<tr>
+							<th>Product</th>
+							<th>Product Name</th>				
+						</tr>
+					</table>
+					<div class="subwindow-container-fix touch-scrollable scrollable-y" style="height:88%;">
+						<table class="product_info" style="text-align:left;" >
+                            <t t-log="widget.options.product_info"/>
+                            <t t-if="widget.options.product_info">
+                                <t t-foreach="widget.options.product_info" t-as="product"> 
+                                    <tr class="product_line" t-att-data-line-id="product.product_id">		
+                                        <td><t t-esc="product.product_id"/></td>
+                                        <td><t t-esc="product.product_name"/></td>
+                                    </tr>
+                                </t>
+                            </t>
+						</table>
+					</div>		
+				</div>
+                <div class="footer">
+					<div class="button cancel">
+						Cancel
+					</div>
+				</div>
+            </div>
+		</div>
+	</t>
+
+    <t t-name="StockPickingStatusInPosPopupWidget">
+		<div class="modal-dialog">
+			<div class="popup popup-textinput" style="width:700px;height:400px">
+				<div class='title' style="margin-bottom:0px">
+					Stock Picking that are not Available (<t t-esc="widget.options.repair_name"/>)
+				</div>
+				<div class="subwindow-container-fix" style="height:210px;">
+					<table class="picking_info" style="text-align:left;background:#e4e2e2" >
+						<tr>
+							<th>Picking Name</th>
+							<th>Picking State</th>				
+						</tr>
+					</table>
+					<div class="subwindow-container-fix touch-scrollable scrollable-y" style="height:88%;">
+						<table class="picking_info" style="text-align:left;">
+                            <t t-log="widget.options.picking_info"/>
+                            <t t-if="widget.options.picking_info">
+                                <t t-foreach="widget.options.picking_info" t-as="picking"> 
+                                    <tr class="picking_line" t-att-data-line-id="picking.picking_id">		
+                                        <td><t t-esc="picking.picking_name"/></td>
+                                        <td><t t-esc="picking.picking_state"/></td>
+                                    </tr>
+                                </t>
+                            </t>
+						</table>
+					</div>		
+				</div>
+                <div class="footer">
+                    <div class="button force_validate">
+						Force Validate
+					</div>
+					<div class="button cancel">
+						Cancel
+					</div>
+				</div>
+            </div>
+		</div>
+	</t>
+    
+    <t t-set="head">
+        
+    </t>
+</templates>
